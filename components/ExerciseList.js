@@ -1,8 +1,19 @@
 import React from "react";
 import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addActiveExercise } from "../redux/activeExercises";
 
-function ExerciseList({ onTap }) {
+function ExerciseList({ onTap, isActiveWorkout = false }) {
+  const dispatch = useDispatch();
+
+  function tapHandler(title) {
+    if (isActiveWorkout) {
+      dispatch(addActiveExercise({ name: title }));
+    }
+    onTap();
+  }
+
   const exerciseTypesList = useSelector(
     (state) => state.exerciseTypesList.exerciseTypes
   );
@@ -14,7 +25,10 @@ function ExerciseList({ onTap }) {
     };
 
     return (
-      <Pressable onPress={() => onTap()} style={styles.exerciseListItem}>
+      <Pressable
+        onPress={() => tapHandler(exerciseItemProps.title)}
+        style={styles.exerciseListItem}
+      >
         <Text style={styles.exerciseListItemText}>
           {exerciseItemProps.title}
         </Text>

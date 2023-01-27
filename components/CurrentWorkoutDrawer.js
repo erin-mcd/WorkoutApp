@@ -5,6 +5,7 @@ import { endWorkout } from "../redux/currentWorkout";
 import { useDispatch } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
 import { useState } from "react";
+import ExerciseDrawerForm from "./ExerciseDrawerForm";
 
 function CurrentWorkoutDrawer() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function CurrentWorkoutDrawer() {
           >
             <Text style={styles.finishButtonText}>Finish</Text>
           </Pressable>
+          <ExerciseDrawerForm />
           <Pressable
             onPress={() => setModalVisible(true)}
             style={styles.addExerciseButton}
