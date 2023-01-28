@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { TextInput } from "react-native";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -23,10 +30,10 @@ function ExerciseDrawerForm() {
     return (
       <View style={styles.inputContainer}>
         <View style={[styles.detailsContainer, { flex: 1 }]}>
-          <Text>1</Text>
+          <Text style={styles.detailsText}>1</Text>
         </View>
         <View style={[styles.detailsContainer, { flex: 2 }]}>
-          <Text>{set.weight + "x" + set.reps}</Text>
+          <Text style={styles.detailsText}>{set.weight + "x" + set.reps}</Text>
         </View>
         <TextInput
           keyboardType="number-pad"
@@ -66,7 +73,7 @@ function ExerciseDrawerForm() {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.exerciseTitle}>{itemData.item.name}</Text>
           <Button
-            onPress={() => dispatch(removeActiveExercise({ id }))}
+            onPress={() => dispatch(removeActiveExercise({ id: exerciseId }))}
             title="Delete Exercise"
           />
         </View>
@@ -84,10 +91,12 @@ function ExerciseDrawerForm() {
             renderSet({ itemData, exerciseId: exerciseId })
           }
         />
-        <Button
-          title="Add Set"
+        <Pressable
+          style={styles.addSetButton}
           onPress={() => dispatch(addSet(itemData.item.id))}
-        />
+        >
+          <Text style={styles.addSetButtonText}>Add Set</Text>
+        </Pressable>
       </View>
     );
   }
@@ -122,7 +131,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    height: 70,
+    height: 30,
     borderRadius: 8,
     width: 350,
   },
@@ -130,5 +139,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0e0e0",
     margin: 4,
     borderRadius: 8,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  detailsText: {
+    textAlign: "center",
+  },
+  addSetButton: {
+    flex: 1,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 8,
+    height: 30,
+    marginTop: 10,
+    justifyContent: "center",
+  },
+  addSetButtonText: {
+    textAlign: "center",
   },
 });
