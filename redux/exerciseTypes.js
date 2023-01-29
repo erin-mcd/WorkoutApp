@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { exerciseTypes } from "../data/exercisesData";
+import { exerciseTypes } from "../data/exerciseTypesData";
 
 const exerciseTypesSlices = createSlice({
   name: "exerciseTypes",

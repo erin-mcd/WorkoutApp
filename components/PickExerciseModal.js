@@ -14,7 +14,7 @@ function PickExerciseModal({ open, onClose }) {
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
           <View style={styles.exerciseList}>
-            <ExerciseList onTap={() => onClose()} />
+            <ExerciseList isActiveWorkout={true} onTap={() => onClose()} />
           </View>
         </View>
       </View>
