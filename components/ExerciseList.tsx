@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addActiveExercise } from "../redux/activeExercises";
+import { addActiveExercise } from "../reduxThings/activeExercises";
 
 function ExerciseList({ onTap, isActiveWorkout = false }) {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ function ExerciseList({ onTap, isActiveWorkout = false }) {
   }
 
   const exerciseTypesList = useSelector(
-    (state) => state.exerciseTypesList.exerciseTypes
+    (state: any) => state.exerciseTypesList.exerciseTypes
   );
 
   function renderExerciseType(itemData) {
@@ -29,15 +29,13 @@ function ExerciseList({ onTap, isActiveWorkout = false }) {
         onPress={() => tapHandler(exerciseItemProps.title)}
         style={styles.exerciseListItem}
       >
-        <Text style={styles.exerciseListItemText}>
-          {exerciseItemProps.title}
-        </Text>
+        <Text>{exerciseItemProps.title}</Text>
       </Pressable>
     );
   }
 
   return (
-    <View style={styles.exerciseList}>
+    <View>
       <FlatList
         data={exerciseTypesList}
         keyExtractor={(item) => item.id}

@@ -1,11 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { store } from "./reduxThings/store";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import React from "react";
 import HistoryScreen from "./screens/HistoryScreen";
 import StatsScreen from "./screens/StatsScreen";
 import StartWorkoutScreen from "./screens/StartWorkoutScreen";

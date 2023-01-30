@@ -4,16 +4,10 @@ import ExerciseList from "./ExerciseList";
 
 function PickExerciseModal({ open, onClose }) {
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={open}
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-    >
+    <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
-          <View style={styles.exerciseList}>
+          <View>
             <ExerciseList isActiveWorkout={true} onTap={() => onClose()} />
           </View>
         </View>
