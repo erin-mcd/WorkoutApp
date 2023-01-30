@@ -74,7 +74,7 @@ function ExerciseDrawerForm() {
     return (
       <View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.exerciseTitle}>{itemData.item.name}</Text>
+          <Text style={styles.exerciseName}>{itemData.item.name}</Text>
           <Button
             onPress={() => dispatch(removeActiveExercise({ id: exerciseId }))}
             title="Delete Exercise"
@@ -121,7 +121,7 @@ function ExerciseDrawerForm() {
 export default ExerciseDrawerForm;
 
 const styles = StyleSheet.create({
-  exerciseTitle: {
+  exerciseName: {
     fontWeight: "bold",
   },
   columnHeadersContainer: {

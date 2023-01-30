@@ -9,7 +9,7 @@ const exerciseTypesSlices = createSlice({
   reducers: {
     addExerciseType: (state, action) => {
       const exerciseType = {
-        title: action.payload.title,
+        name: action.payload.name,
         id: action.payload.id,
       };
       state.exerciseTypes.push(exerciseType);
@@ -27,9 +27,7 @@ const exerciseTypesSlices = createSlice({
         return object.id === action.payload.id;
       });
 
-      state.exerciseTypes[exerciseTypeIndex].title = action.payload.title;
-      state.exerciseTypes[exerciseTypeIndex].cost = action.payload.cost;
-      state.exerciseTypes[exerciseTypeIndex].date = action.payload.date;
+      state.exerciseTypes[exerciseTypeIndex].name = action.payload.name;
     },
   },
 });

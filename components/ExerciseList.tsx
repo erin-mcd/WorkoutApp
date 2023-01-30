@@ -7,9 +7,9 @@ import { addActiveExercise } from "../reduxThings/activeExercises";
 function ExerciseList({ onTap, isActiveWorkout = false }) {
   const dispatch = useDispatch();
 
-  function tapHandler(title) {
+  function tapHandler(name) {
     if (isActiveWorkout) {
-      dispatch(addActiveExercise({ name: title }));
+      dispatch(addActiveExercise({ name: name }));
     }
     onTap();
   }
@@ -20,16 +20,16 @@ function ExerciseList({ onTap, isActiveWorkout = false }) {
 
   function renderExerciseType(itemData) {
     const exerciseItemProps = {
-      title: itemData.item.title,
+      name: itemData.item.name,
       id: itemData.item.id,
     };
 
     return (
       <Pressable
-        onPress={() => tapHandler(exerciseItemProps.title)}
+        onPress={() => tapHandler(exerciseItemProps.name)}
         style={styles.exerciseListItem}
       >
-        <Text>{exerciseItemProps.title}</Text>
+        <Text>{exerciseItemProps.name}</Text>
       </Pressable>
     );
   }
