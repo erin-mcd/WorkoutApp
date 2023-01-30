@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addExerciseType } from "../redux/exerciseTypes";
+import { addExerciseType } from "../reduxThings/exerciseTypes";
 
 function CreateExerciseTypeModal({ open, onClose }) {
   const dispatch = useDispatch();
@@ -19,12 +19,12 @@ function CreateExerciseTypeModal({ open, onClose }) {
     setTitle(enteredTitle);
   }
   function getId() {
-    const id = Math.random(0, 1000);
+    const id = Math.random();
     return id;
   }
 
   function validateInputs(title) {
-    const validationErrors = [];
+    const validationErrors: string[] = [];
 
     const titleIsValid = title.length > 0 && title.length < 20;
 
@@ -47,13 +47,7 @@ function CreateExerciseTypeModal({ open, onClose }) {
   }
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={open}
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-    >
+    <Modal animationType="slide" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
           <View style={styles.inputsContainer}>

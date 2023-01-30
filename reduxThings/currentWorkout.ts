@@ -6,10 +6,10 @@ const activeWorkoutSlices = createSlice({
     activeWorkout: false,
   },
   reducers: {
-    startWorkout: (state, action) => {
+    startWorkout: (state) => {
       state.activeWorkout = true;
     },
-    endWorkout: (state, action) => {
+    endWorkout: (state) => {
       state.activeWorkout = false;
     },
   },

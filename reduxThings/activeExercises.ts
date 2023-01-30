@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Exercise } from "../models/Exercise";
+
+const test: Exercise[] = [];
 
 const activeExercisesSlices = createSlice({
   name: "activeExercises",
   initialState: {
-    activeExercises: [],
+    activeExercises: test,
   },
   reducers: {
     addSet: (state, action) => {
@@ -14,7 +17,7 @@ const activeExercisesSlices = createSlice({
       const newSet = {
         weight: 0,
         reps: 0,
-        id: Math.random(0, 1000),
+        id: Math.random(),
       };
       state.activeExercises[index].sets.push(newSet);
     },
@@ -43,7 +46,7 @@ const activeExercisesSlices = createSlice({
     },
     addActiveExercise: (state, action) => {
       const newExercise = {
-        id: Math.random(0, 1000),
+        id: Math.random(),
         name: action.payload.name,
         sets: [
           {
@@ -63,7 +66,7 @@ const activeExercisesSlices = createSlice({
         1
       );
     },
-    reset: (state, action) => {
+    reset: (state) => {
       state.activeExercises = [];
     },
   },

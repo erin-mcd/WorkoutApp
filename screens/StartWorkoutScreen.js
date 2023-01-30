@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, StyleSheet } from "react-native";
 import CurrentWorkoutDrawer from "../components/CurrentWorkoutDrawer";
-import { startWorkout } from "../redux/currentWorkout";
+import { startWorkout } from "../reduxThings/currentWorkout";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 

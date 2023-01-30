@@ -10,22 +10,25 @@ import {
 import { TextInput } from "react-native";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { editSetWeight } from "../redux/activeExercises";
+import { Exercise } from "../models/Exercise";
+import { ExerciseSet } from "../models/ExerciseSet";
+import { editSetWeight } from "../reduxThings/activeExercises";
 import {
   removeActiveExercise,
   addSet,
   removeSet,
-} from "../redux/activeExercises";
-import { reset } from "../redux/activeExercises";
+} from "../reduxThings/activeExercises";
+import { reset } from "../reduxThings/activeExercises";
+import type { RootState } from "../reduxThings/store";
 
 function ExerciseDrawerForm() {
-  const activeExercises = useSelector(
-    (state) => state.activeExercises.activeExercises
+  const activeExercises: Exercise[] = useSelector(
+    (state: RootState) => state.activeExercises.activeExercises
   );
   const dispatch = useDispatch();
 
   function renderSet({ itemData, exerciseId }) {
-    const set = itemData.item;
+    const set: ExerciseSet = itemData.item;
 
     return (
       <View style={styles.inputContainer}>
@@ -106,7 +109,7 @@ function ExerciseDrawerForm() {
       <View>
         <FlatList
           data={activeExercises}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.name}
           renderItem={renderExercises}
         />
         <Button title="reset" onPress={() => dispatch(reset())} />

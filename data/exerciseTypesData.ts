@@ -1,4 +1,6 @@
-export const exerciseTypes = [
+import { ExerciseType } from "../models/ExerciseType";
+
+export const exerciseTypes: ExerciseType[] = [
   {
     title: "Overhead Press",
     id: 1,
