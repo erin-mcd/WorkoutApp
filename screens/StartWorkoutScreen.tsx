@@ -1,14 +1,15 @@
 import React from "react";
 import { Button, StyleSheet } from "react-native";
 import CurrentWorkoutDrawer from "../components/CurrentWorkoutDrawer";
-import { startWorkout } from "../reduxThings/currentWorkout";
+import { startWorkout } from "../reduxThings/activeExercises";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { RootState } from "../reduxThings/store";
 
 function StartWorkoutScreen(props) {
   const dispatch = useDispatch();
   const currentWorkoutState = useSelector(
-    (state) => state.activeWorkout.activeWorkout
+    (state: RootState) => state.activeExercises.activeWorkout
   );
 
   function startWorkoutHandler() {
