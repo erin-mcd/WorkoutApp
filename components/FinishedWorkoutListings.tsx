@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import { View, StyleSheet, Text, FlatList, Button } from "react-native";
 import { Exercise } from "../models/Exercise";
+import { dropWorkoutTable } from "../db-service";
 
-function FinishedWorkoutListings(workouts) {
-  function renderExercise(itemData) {
+function FinishedWorkoutListings(workouts: any) {
+  function renderExercise(itemData: any) {
     const exercise: Exercise = itemData.item;
     return (
       <View style={styles.exerciseContainer}>
@@ -16,10 +17,11 @@ function FinishedWorkoutListings(workouts) {
     );
   }
 
-  function renderWorkoutListing(itemData) {
+  function renderWorkoutListing(itemData: any) {
     const workoutObject: Exercise[] = JSON.parse(itemData.item.jsonObject);
     return (
       <View style={styles.workoutContainer}>
+        <Text>{itemData.item.date}</Text>
         <FlatList
           data={workoutObject}
           keyExtractor={(item) => JSON.stringify(item.id)}
@@ -36,6 +38,7 @@ function FinishedWorkoutListings(workouts) {
         keyExtractor={(item) => item.id}
         renderItem={renderWorkoutListing}
       />
+      <Button title="clear" onPress={() => dropWorkoutTable()} />
     </View>
   );
 }

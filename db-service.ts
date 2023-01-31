@@ -1,59 +1,58 @@
-export const addName = (db, currentName) => {
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("db.testDb");
+
+export const addName = (currentName: string) => {
+  db.transaction((tx) => {
+    tx.executeSql("INSERT INTO names (name) values (?)", [currentName]);
+  });
+};
+
+export const addWorkout = (jsonObject: string, startDate: string) => {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT INTO names (name) values (?)",
-      [currentName],
-      (txObj, resultSet) => {
-        console.log(resultSet.rows._array);
-      },
-      (txObject, error) => console.log(error)
+      "INSERT INTO workoutObjects (jsonObject, date) values (?, ?)",
+      [jsonObject, startDate]
     );
   });
 };
 
-export const addWorkout = (db, jsonObject) => {
+export const addSetToExerciseStatTable = (
+  tableName: string,
+  date: string,
+  weight: number,
+  reps: number
+) => {
   db.transaction((tx) => {
     tx.executeSql(
-      "INSERT INTO workoutObjects (jsonObject) values (?)",
-      [jsonObject],
-      (txObj, resultSet) => {
-        console.log(resultSet.rows._array);
-      },
-      (txObject, error) => console.log(error)
+      "INSERT INTO " + tableName + " (date, weight, reps) values (?, ?, ?)",
+      [date, weight, reps]
     );
   });
 };
 
-export const dropTable = (db) => {
+export const dropWorkoutTable = () => {
   db.transaction((tx) => {
-    tx.executeSql("DROP TABLE names");
+    tx.executeSql("DROP TABLE workoutObjects");
   });
 };
 
-export const getTable = (db, tableName) => {
+export const getTable = (tableName: string) => {
   db.transaction((tx) => {
-    tx.executeSql(
-      "SELECT * FROM " + tableName,
-      null,
-      (txObj, resultSet) => {
-        console.log(resultSet.rows._array);
-      },
-      (txObject, error) => console.log(error)
-    );
+    tx.executeSql("SELECT * FROM " + tableName, null);
   });
 };
 
-export const createExerciseStatTable = (db, tableName) => {
+export const createExerciseStatTable = (tableName: string) => {
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS " +
         tableName +
-        " (id INTEGER PRIMARY KEY AUTOINCREMENT, weight REAL, reps INTEGER)"
+        " (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, weight REAL, reps INTEGER)"
     );
   });
 };
 
-export const createWorkoutObjectTable = (db) => {
+export const createWorkoutObjectTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS workoutObjects (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, jsonObject TEXT)"

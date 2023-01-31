@@ -8,8 +8,6 @@ import PickExerciseModal from "./PickExerciseModal";
 import { useState } from "react";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { getTable } from "../db-service";
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("db.testDb");
 
 function CurrentWorkoutDrawer() {
   const dispatch = useDispatch();
@@ -34,7 +32,7 @@ function CurrentWorkoutDrawer() {
           </Pressable>
           <Button
             title={"print table"}
-            onPress={() => getTable(db, "workoutObjects")}
+            onPress={() => getTable("workoutObjects")}
           />
         </View>
       </BottomDrawer>

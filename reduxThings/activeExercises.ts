@@ -1,17 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Exercise } from "../models/Exercise";
-import * as SQLite from "expo-sqlite";
-import { addWorkout } from "../db-service";
+import { addSetToExerciseStatTable, addWorkout } from "../db-service";
+import { createExerciseStatTable } from "../db-service";
 
 const init: Exercise[] = [];
 
-const db = SQLite.openDatabase("db.testDb");
+function updateStatsByExercise(finishedExercises: Exercise[], date: string) {
+  finishedExercises.forEach((exercise) => {
+    console.log("shuold create table for " + exercise.name);
+    createExerciseStatTable(exercise.name);
+    exercise.sets.forEach((set) => {
+      console.log(
+        "set to add to " +
+          exercise.name +
+          JSON.stringify({ date: date, weight: set.weight, reps: set.reps })
+      );
+      addSetToExerciseStatTable(exercise.name, date, set.weight, set.reps);
+    });
+  });
+}
 
 const activeExercisesSlices = createSlice({
   name: "activeExercises",
   initialState: {
     activeWorkout: false,
     activeExercises: init,
+    startDate: "",
   },
   reducers: {
     addSet: (state, action) => {
@@ -93,11 +107,12 @@ const activeExercisesSlices = createSlice({
     },
     startWorkout: (state) => {
       state.activeWorkout = true;
+      state.startDate = new Date().toTimeString();
     },
     endWorkout: (state) => {
       const jsonObject = JSON.stringify(state.activeExercises);
-      addWorkout(db, jsonObject);
-
+      addWorkout(jsonObject, state.startDate);
+      updateStatsByExercise(state.activeExercises, state.startDate);
       state.activeWorkout = false;
     },
   },
