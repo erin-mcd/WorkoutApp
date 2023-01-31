@@ -22,13 +22,18 @@ import {
 import { reset } from "../reduxThings/activeExercises";
 import type { RootState } from "../reduxThings/store";
 
+interface Props {
+  itemData: any;
+  exerciseId: number;
+}
+
 function ExerciseDrawerForm() {
   const activeExercises: Exercise[] = useSelector(
     (state: RootState) => state.activeExercises.activeExercises
   );
   const dispatch = useDispatch();
 
-  function renderSet({ itemData, exerciseId }) {
+  function renderSet({ itemData, exerciseId }: Props) {
     const set: ExerciseSet = itemData.item;
 
     return (
@@ -79,7 +84,7 @@ function ExerciseDrawerForm() {
     );
   }
 
-  function renderExercises(itemData) {
+  function renderExercises(itemData: any) {
     const exerciseId = itemData.item.id;
     return (
       <View>

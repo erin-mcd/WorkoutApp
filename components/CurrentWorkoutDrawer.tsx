@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Button, Pressable } from "react-native";
+// @ts-ignore
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { endWorkout } from "../reduxThings/activeExercises";
 import { useDispatch } from "react-redux";

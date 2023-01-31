@@ -6,16 +6,22 @@ import {
   View,
   Pressable,
   Modal,
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addExerciseType } from "../reduxThings/exerciseTypes";
 
-function CreateExerciseTypeModal({ open, onClose }) {
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
+function CreateExerciseTypeModal({ open, onClose }: Props) {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
 
-  function nameInputHandler(enteredName) {
+  function nameInputHandler(enteredName: string) {
     setName(enteredName);
   }
   function getId() {
@@ -23,7 +29,7 @@ function CreateExerciseTypeModal({ open, onClose }) {
     return id;
   }
 
-  function validateInputs(name) {
+  function validateInputs(name: string) {
     const validationErrors: string[] = [];
 
     const nameIsValid = name.length > 0 && name.length < 20;
@@ -38,7 +44,7 @@ function CreateExerciseTypeModal({ open, onClose }) {
   function confirmHandler() {
     const errors = validateInputs(name);
     if (errors.length > 0) {
-      alert(JSON.stringify(errors));
+      Alert.alert(JSON.stringify(errors));
     } else {
       dispatch(addExerciseType({ name, id: getId() }));
     }
