@@ -6,41 +6,47 @@ import {
   View,
   Pressable,
   Modal,
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addExerciseType } from "../reduxThings/exerciseTypes";
 
-function CreateExerciseTypeModal({ open, onClose }) {
-  const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
 
-  function titleInputHandler(enteredTitle) {
-    setTitle(enteredTitle);
+function CreateExerciseTypeModal({ open, onClose }: Props) {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+
+  function nameInputHandler(enteredName: string) {
+    setName(enteredName);
   }
   function getId() {
     const id = Math.random();
     return id;
   }
 
-  function validateInputs(title) {
+  function validateInputs(name: string) {
     const validationErrors: string[] = [];
 
-    const titleIsValid = title.length > 0 && title.length < 20;
+    const nameIsValid = name.length > 0 && name.length < 20;
 
-    if (!titleIsValid) {
-      validationErrors.push("Title is Invalid");
+    if (!nameIsValid) {
+      validationErrors.push("Name is Invalid");
     }
 
     return validationErrors;
   }
 
   function confirmHandler() {
-    const errors = validateInputs(title);
+    const errors = validateInputs(name);
     if (errors.length > 0) {
-      alert(JSON.stringify(errors));
+      Alert.alert(JSON.stringify(errors));
     } else {
-      dispatch(addExerciseType({ title, id: getId() }));
+      dispatch(addExerciseType({ name, id: getId() }));
     }
 
     onClose();
@@ -53,8 +59,8 @@ function CreateExerciseTypeModal({ open, onClose }) {
           <View style={styles.inputsContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder="ExerciseType Title"
-              onChangeText={titleInputHandler}
+              placeholder="ExerciseType Name"
+              onChangeText={nameInputHandler}
             />
           </View>
           <View style={styles.buttonsContainer}>

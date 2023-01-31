@@ -3,13 +3,17 @@ import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addActiveExercise } from "../reduxThings/activeExercises";
+interface Props {
+  onTap: () => void;
+  isActiveWorkout: boolean;
+}
 
-function ExerciseList({ onTap, isActiveWorkout = false }) {
+function ExerciseList({ onTap, isActiveWorkout = false }: Props) {
   const dispatch = useDispatch();
 
-  function tapHandler(title) {
+  function tapHandler(name: string) {
     if (isActiveWorkout) {
-      dispatch(addActiveExercise({ name: title }));
+      dispatch(addActiveExercise({ name: name }));
     }
     onTap();
   }
@@ -18,18 +22,18 @@ function ExerciseList({ onTap, isActiveWorkout = false }) {
     (state: any) => state.exerciseTypesList.exerciseTypes
   );
 
-  function renderExerciseType(itemData) {
+  function renderExerciseType(itemData: any) {
     const exerciseItemProps = {
-      title: itemData.item.title,
+      name: itemData.item.name,
       id: itemData.item.id,
     };
 
     return (
       <Pressable
-        onPress={() => tapHandler(exerciseItemProps.title)}
+        onPress={() => tapHandler(exerciseItemProps.name)}
         style={styles.exerciseListItem}
       >
-        <Text>{exerciseItemProps.title}</Text>
+        <Text>{exerciseItemProps.name}</Text>
       </Pressable>
     );
   }

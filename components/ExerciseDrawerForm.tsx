@@ -17,9 +17,15 @@ import {
   removeActiveExercise,
   addSet,
   removeSet,
+  editSetReps,
 } from "../reduxThings/activeExercises";
 import { reset } from "../reduxThings/activeExercises";
 import type { RootState } from "../reduxThings/store";
+
+interface Props {
+  itemData: any;
+  exerciseId: number;
+}
 
 function ExerciseDrawerForm() {
   const activeExercises: Exercise[] = useSelector(
@@ -27,7 +33,7 @@ function ExerciseDrawerForm() {
   );
   const dispatch = useDispatch();
 
-  function renderSet({ itemData, exerciseId }) {
+  function renderSet({ itemData, exerciseId }: Props) {
     const set: ExerciseSet = itemData.item;
 
     return (
@@ -56,6 +62,15 @@ function ExerciseDrawerForm() {
         <TextInput
           keyboardType="number-pad"
           style={[styles.detailsContainer, { flex: 1 }]}
+          onChangeText={(text) =>
+            dispatch(
+              editSetReps({
+                exerciseId,
+                setId: itemData.item.id,
+                reps: text ?? 0,
+              })
+            )
+          }
         >
           {set.reps}
         </TextInput>
@@ -69,12 +84,12 @@ function ExerciseDrawerForm() {
     );
   }
 
-  function renderExercises(itemData) {
+  function renderExercises(itemData: any) {
     const exerciseId = itemData.item.id;
     return (
       <View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.exerciseTitle}>{itemData.item.name}</Text>
+          <Text style={styles.exerciseName}>{itemData.item.name}</Text>
           <Button
             onPress={() => dispatch(removeActiveExercise({ id: exerciseId }))}
             title="Delete Exercise"
@@ -121,7 +136,7 @@ function ExerciseDrawerForm() {
 export default ExerciseDrawerForm;
 
 const styles = StyleSheet.create({
-  exerciseTitle: {
+  exerciseName: {
     fontWeight: "bold",
   },
   columnHeadersContainer: {

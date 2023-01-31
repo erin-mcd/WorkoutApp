@@ -9,7 +9,8 @@ import HistoryScreen from "./screens/HistoryScreen";
 import StatsScreen from "./screens/StatsScreen";
 import StartWorkoutScreen from "./screens/StartWorkoutScreen";
 import ExercisesScreen from "./screens/ExercisesScreen";
-
+import { createWorkoutObjectTable } from "./db-service";
+createWorkoutObjectTable();
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 

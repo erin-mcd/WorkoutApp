@@ -7,7 +7,7 @@ import CreateExerciseTypeModal from "../components/CreateExerciseTypeModal";
 import { useState } from "react";
 import ExerciseList from "../components/ExerciseList";
 
-function Exercises({ navigation }) {
+function Exercises({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
@@ -29,7 +29,7 @@ function Exercises({ navigation }) {
 
   return (
     <>
-      <ExerciseList onTap={() => console.log("hi")} />
+      <ExerciseList onTap={() => console.log("hi")} isActiveWorkout={false} />
       <CreateExerciseTypeModal
         open={modalVisible}
         onClose={() => setModalVisible(false)}
