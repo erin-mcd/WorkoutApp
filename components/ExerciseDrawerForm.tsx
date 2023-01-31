@@ -17,6 +17,7 @@ import {
   removeActiveExercise,
   addSet,
   removeSet,
+  editSetReps,
 } from "../reduxThings/activeExercises";
 import { reset } from "../reduxThings/activeExercises";
 import type { RootState } from "../reduxThings/store";
@@ -56,6 +57,15 @@ function ExerciseDrawerForm() {
         <TextInput
           keyboardType="number-pad"
           style={[styles.detailsContainer, { flex: 1 }]}
+          onChangeText={(text) =>
+            dispatch(
+              editSetReps({
+                exerciseId,
+                setId: itemData.item.id,
+                reps: text ?? 0,
+              })
+            )
+          }
         >
           {set.reps}
         </TextInput>

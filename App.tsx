@@ -9,7 +9,11 @@ import HistoryScreen from "./screens/HistoryScreen";
 import StatsScreen from "./screens/StatsScreen";
 import StartWorkoutScreen from "./screens/StartWorkoutScreen";
 import ExercisesScreen from "./screens/ExercisesScreen";
+import * as SQLite from "expo-sqlite";
+import { createWorkoutObjectTable } from "./db-service";
 
+const db = SQLite.openDatabase("db.testDb");
+createWorkoutObjectTable(db);
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 

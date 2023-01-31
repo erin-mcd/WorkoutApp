@@ -1,12 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Exercise } from "../models/Exercise";
+import * as SQLite from "expo-sqlite";
+import { addWorkout } from "../db-service";
 
-const test: Exercise[] = [];
+const init: Exercise[] = [];
+
+const db = SQLite.openDatabase("db.testDb");
 
 const activeExercisesSlices = createSlice({
   name: "activeExercises",
   initialState: {
-    activeExercises: test,
+    activeWorkout: false,
+    activeExercises: init,
   },
   reducers: {
     addSet: (state, action) => {
@@ -41,8 +46,25 @@ const activeExercisesSlices = createSlice({
       const index = state.activeExercises.findIndex((object) => {
         return object.id === exerciseId;
       });
+      const setIndex = state.activeExercises[index].sets.findIndex((object) => {
+        return object.id === setId;
+      });
 
-      state.activeExercises[index].sets[setId].weight = action.payload.weight;
+      state.activeExercises[index].sets[setIndex].weight =
+        action.payload.weight;
+    },
+    editSetReps: (state, action) => {
+      const exerciseId = action.payload.exerciseId;
+      const setId = action.payload.setId;
+      const index = state.activeExercises.findIndex((object) => {
+        return object.id === exerciseId;
+      });
+
+      const setIndex = state.activeExercises[index].sets.findIndex((object) => {
+        return object.id === setId;
+      });
+
+      state.activeExercises[index].sets[setIndex].reps = action.payload.reps;
     },
     addActiveExercise: (state, action) => {
       const newExercise = {
@@ -69,6 +91,15 @@ const activeExercisesSlices = createSlice({
     reset: (state) => {
       state.activeExercises = [];
     },
+    startWorkout: (state) => {
+      state.activeWorkout = true;
+    },
+    endWorkout: (state) => {
+      const jsonObject = JSON.stringify(state.activeExercises);
+      addWorkout(db, jsonObject);
+
+      state.activeWorkout = false;
+    },
   },
 });
 
@@ -79,5 +110,8 @@ export const removeSet = activeExercisesSlices.actions.removeSet;
 export const removeActiveExercise =
   activeExercisesSlices.actions.removeActiveExercise;
 export const editSetWeight = activeExercisesSlices.actions.editSetWeight;
+export const editSetReps = activeExercisesSlices.actions.editSetReps;
 export const reset = activeExercisesSlices.actions.reset;
+export const startWorkout = activeExercisesSlices.actions.startWorkout;
+export const endWorkout = activeExercisesSlices.actions.endWorkout;
 export default activeExercisesSlices.reducer;

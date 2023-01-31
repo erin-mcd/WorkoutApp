@@ -1,11 +1,14 @@
 import React from "react";
 import { StyleSheet, View, Text, Button, Pressable } from "react-native";
 import BottomDrawer from "react-native-bottom-drawer-view";
-import { endWorkout } from "../reduxThings/currentWorkout";
+import { endWorkout } from "../reduxThings/activeExercises";
 import { useDispatch } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
 import { useState } from "react";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
+import { getTable } from "../db-service";
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("db.testDb");
 
 function CurrentWorkoutDrawer() {
   const dispatch = useDispatch();
@@ -28,6 +31,10 @@ function CurrentWorkoutDrawer() {
           >
             <Text style={styles.addExerciseText}>Add an Exercise</Text>
           </Pressable>
+          <Button
+            title={"print table"}
+            onPress={() => getTable(db, "workoutObjects")}
+          />
         </View>
       </BottomDrawer>
       <PickExerciseModal
