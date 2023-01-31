@@ -30,18 +30,20 @@ export const dropTable = (db) => {
   });
 };
 
-export const getTable = (db, tableName: string) => {
+export const getTable = (db, tableName) => {
   db.transaction((tx) => {
     tx.executeSql(
       "SELECT * FROM " + tableName,
       null,
-      (txObj, resultSet) => console.log(resultSet.rows._array),
+      (txObj, resultSet) => {
+        console.log(resultSet.rows._array);
+      },
       (txObject, error) => console.log(error)
     );
   });
 };
 
-export const createExerciseStatTable = (db, tableName: string) => {
+export const createExerciseStatTable = (db, tableName) => {
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS " +
