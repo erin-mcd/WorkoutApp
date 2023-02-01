@@ -2,16 +2,28 @@ import React from "react";
 import { StyleSheet, View, Text, Button, Pressable } from "react-native";
 // @ts-ignore
 import BottomDrawer from "react-native-bottom-drawer-view";
-import { endWorkout } from "../reduxThings/activeExercises";
-import { useDispatch } from "react-redux";
+import { addActiveExercise, endWorkout } from "../reduxThings/activeExercises";
+import { useDispatch, useSelector } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
 import { useState } from "react";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { getTable } from "../db-service";
+import { Exercise } from "../models/Exercise";
+import { RootState } from "../reduxThings/store";
+import {
+  removeActiveExercise,
+  addSet,
+  removeSet,
+  editSetReps,
+  editSetWeight,
+} from "../reduxThings/activeExercises";
 
 function CurrentWorkoutDrawer() {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  const activeExercises: Exercise[] = useSelector(
+    (state: RootState) => state.activeExercises.activeExercises
+  );
 
   return (
     <>
@@ -23,7 +35,14 @@ function CurrentWorkoutDrawer() {
           >
             <Text style={styles.finishButtonText}>Finish</Text>
           </Pressable>
-          <ExerciseDrawerForm />
+          <ExerciseDrawerForm
+            exercises={activeExercises}
+            removeExerciseFunction={removeActiveExercise}
+            removeSetFunction={removeSet}
+            addSetFunction={addSet}
+            editSetRepsFunction={editSetReps}
+            editSetWeightFunction={editSetWeight}
+          />
           <Pressable
             onPress={() => setModalVisible(true)}
             style={styles.addExerciseButton}
@@ -39,6 +58,7 @@ function CurrentWorkoutDrawer() {
       <PickExerciseModal
         open={modalVisible}
         onClose={() => setModalVisible(false)}
+        addActiveExerciseFunction={addActiveExercise}
       />
     </>
   );

@@ -8,29 +8,23 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Exercise } from "../models/Exercise";
 import { ExerciseSet } from "../models/ExerciseSet";
-import { editSetWeight } from "../reduxThings/activeExercises";
-import {
-  removeActiveExercise,
-  addSet,
-  removeSet,
-  editSetReps,
-} from "../reduxThings/activeExercises";
 import { reset } from "../reduxThings/activeExercises";
-import type { RootState } from "../reduxThings/store";
 
 interface Props {
   itemData: any;
   exerciseId: number;
 }
 
-function ExerciseDrawerForm() {
-  const activeExercises: Exercise[] = useSelector(
-    (state: RootState) => state.activeExercises.activeExercises
-  );
+function ExerciseDrawerForm({
+  exercises,
+  removeExerciseFunction,
+  editSetRepsFunction,
+  removeSetFunction,
+  editSetWeightFunction,
+  addSetFunction,
+}) {
   const dispatch = useDispatch();
 
   function renderSet({ itemData, exerciseId }: Props) {
@@ -48,7 +42,7 @@ function ExerciseDrawerForm() {
           keyboardType="number-pad"
           onChangeText={(text) =>
             dispatch(
-              editSetWeight({
+              editSetWeightFunction({
                 exerciseId,
                 setId: itemData.item.id,
                 weight: text ?? 0,
@@ -64,7 +58,7 @@ function ExerciseDrawerForm() {
           style={[styles.detailsContainer, { flex: 1 }]}
           onChangeText={(text) =>
             dispatch(
-              editSetReps({
+              editSetRepsFunction({
                 exerciseId,
                 setId: itemData.item.id,
                 reps: text ?? 0,
@@ -76,7 +70,7 @@ function ExerciseDrawerForm() {
         </TextInput>
         <Button
           onPress={() =>
-            dispatch(removeSet({ exerciseId, setId: itemData.item.id }))
+            dispatch(removeSetFunction({ exerciseId, setId: itemData.item.id }))
           }
           title="Delete Set"
         />
@@ -91,7 +85,7 @@ function ExerciseDrawerForm() {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.exerciseName}>{itemData.item.name}</Text>
           <Button
-            onPress={() => dispatch(removeActiveExercise({ id: exerciseId }))}
+            onPress={() => dispatch(removeExerciseFunction({ id: exerciseId }))}
             title="Delete Exercise"
           />
         </View>
@@ -111,7 +105,7 @@ function ExerciseDrawerForm() {
         />
         <Pressable
           style={styles.addSetButton}
-          onPress={() => dispatch(addSet(itemData.item.id))}
+          onPress={() => dispatch(addSetFunction(itemData.item.id))}
         >
           <Text style={styles.addSetButtonText}>Add Set</Text>
         </Pressable>
@@ -123,7 +117,7 @@ function ExerciseDrawerForm() {
     <View style={{ height: 400 }}>
       <View>
         <FlatList
-          data={activeExercises}
+          data={exercises}
           keyExtractor={(item) => item.name}
           renderItem={renderExercises}
         />

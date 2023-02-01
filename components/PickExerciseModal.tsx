@@ -2,13 +2,17 @@ import React from "react";
 import { StyleSheet, View, Modal } from "react-native";
 import ExerciseList from "./ExerciseList";
 
-function PickExerciseModal({ open, onClose }) {
+function PickExerciseModal({ open, onClose, addActiveExerciseFunction }) {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
           <View>
-            <ExerciseList isActiveWorkout={true} onTap={() => onClose()} />
+            <ExerciseList
+              isActiveWorkout={true}
+              onTap={() => onClose()}
+              addActiveExerciseFunction={addActiveExerciseFunction}
+            />
           </View>
         </View>
       </View>
