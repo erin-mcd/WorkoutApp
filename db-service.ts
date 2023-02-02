@@ -16,6 +16,18 @@ export const addWorkout = (jsonObject: string, startDate: string) => {
   });
 };
 
+export const editWorkoutHistory = (
+  newJsonObject: string,
+  workoutId: number
+) => {
+  db.transaction((tx) => {
+    tx.executeSql("UPDATE workoutObjects SET jsonObject = ? WHERE id= ?", [
+      newJsonObject,
+      workoutId,
+    ]);
+  });
+};
+
 export const addSetToExerciseStatTable = (
   tableName: string,
   date: string,

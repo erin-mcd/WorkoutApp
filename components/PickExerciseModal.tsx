@@ -10,6 +10,7 @@ function PickExerciseModal({ open, onClose, addActiveExerciseFunction }) {
           <View>
             <ExerciseList
               isActiveWorkout={true}
+              isHistoryEdit={true}
               onTap={() => onClose()}
               addActiveExerciseFunction={addActiveExerciseFunction}
             />

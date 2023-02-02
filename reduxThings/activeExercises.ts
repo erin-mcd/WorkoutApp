@@ -7,7 +7,6 @@ const init: Exercise[] = [];
 
 function updateStatsByExercise(finishedExercises: Exercise[], date: string) {
   finishedExercises.forEach((exercise) => {
-    console.log("shuold create table for " + exercise.name);
     createExerciseStatTable(exercise.name);
     exercise.sets.forEach((set) => {
       console.log(

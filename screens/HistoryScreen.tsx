@@ -25,7 +25,13 @@ function HistoryScreen() {
 
   setWorkoutTableFromDB(db);
 
-  return <FinishedWorkoutListings workouts={workoutTable} />;
+  return (
+    <>
+      {workoutTable !== undefined ? (
+        <FinishedWorkoutListings workouts={workoutTable} />
+      ) : null}
+    </>
+  );
 }
 
 export default HistoryScreen;

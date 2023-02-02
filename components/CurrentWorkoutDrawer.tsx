@@ -25,6 +25,40 @@ function CurrentWorkoutDrawer() {
     (state: RootState) => state.activeExercises.activeExercises
   );
 
+  function editSetWeightActiveExercise({ exerciseId, setId, weight }) {
+    dispatch(
+      editSetWeight({
+        exerciseId,
+        setId,
+        weight,
+      })
+    );
+  }
+
+  function editSetRepsActiveExercise({ exerciseId, setId, reps }) {
+    dispatch(
+      editSetReps({
+        exerciseId,
+        setId,
+        reps,
+      })
+    );
+  }
+  function addSetActiveExercise(exerciseId) {
+    dispatch(addSet(exerciseId));
+  }
+  function removeActiveSet({ exerciseId, setId }) {
+    dispatch(removeSet({ exerciseId, setId }));
+  }
+
+  function removeActiveExerciseFunction(exerciseId) {
+    dispatch(removeActiveExercise({ id: exerciseId }));
+  }
+
+  function addActiveExerciseFunction({ name }) {
+    dispatch(addActiveExercise({ name: name }));
+  }
+
   return (
     <>
       <BottomDrawer containerHeight={800} downDisplay={500}>
@@ -37,11 +71,11 @@ function CurrentWorkoutDrawer() {
           </Pressable>
           <ExerciseDrawerForm
             exercises={activeExercises}
-            removeExerciseFunction={removeActiveExercise}
-            removeSetFunction={removeSet}
-            addSetFunction={addSet}
-            editSetRepsFunction={editSetReps}
-            editSetWeightFunction={editSetWeight}
+            removeExerciseFunction={removeActiveExerciseFunction}
+            removeSetFunction={removeActiveSet}
+            addSetFunction={addSetActiveExercise}
+            editSetRepsFunction={editSetRepsActiveExercise}
+            editSetWeightFunction={editSetWeightActiveExercise}
           />
           <Pressable
             onPress={() => setModalVisible(true)}
@@ -58,7 +92,7 @@ function CurrentWorkoutDrawer() {
       <PickExerciseModal
         open={modalVisible}
         onClose={() => setModalVisible(false)}
-        addActiveExerciseFunction={addActiveExercise}
+        addActiveExerciseFunction={addActiveExerciseFunction}
       />
     </>
   );

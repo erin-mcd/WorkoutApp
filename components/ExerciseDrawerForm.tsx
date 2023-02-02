@@ -41,13 +41,11 @@ function ExerciseDrawerForm({
         <TextInput
           keyboardType="number-pad"
           onChangeText={(text) =>
-            dispatch(
-              editSetWeightFunction({
-                exerciseId,
-                setId: itemData.item.id,
-                weight: text ?? 0,
-              })
-            )
+            editSetWeightFunction({
+              exerciseId,
+              setId: itemData.item.id,
+              weight: text ?? 0,
+            })
           }
           style={[styles.detailsContainer, { flex: 1 }]}
         >
@@ -57,20 +55,18 @@ function ExerciseDrawerForm({
           keyboardType="number-pad"
           style={[styles.detailsContainer, { flex: 1 }]}
           onChangeText={(text) =>
-            dispatch(
-              editSetRepsFunction({
-                exerciseId,
-                setId: itemData.item.id,
-                reps: text ?? 0,
-              })
-            )
+            editSetRepsFunction({
+              exerciseId,
+              setId: itemData.item.id,
+              reps: text ?? 0,
+            })
           }
         >
           {set.reps}
         </TextInput>
         <Button
           onPress={() =>
-            dispatch(removeSetFunction({ exerciseId, setId: itemData.item.id }))
+            removeSetFunction({ exerciseId, setId: itemData.item.id })
           }
           title="Delete Set"
         />
@@ -85,7 +81,7 @@ function ExerciseDrawerForm({
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.exerciseName}>{itemData.item.name}</Text>
           <Button
-            onPress={() => dispatch(removeExerciseFunction({ id: exerciseId }))}
+            onPress={() => removeExerciseFunction({ id: exerciseId })}
             title="Delete Exercise"
           />
         </View>
@@ -105,7 +101,7 @@ function ExerciseDrawerForm({
         />
         <Pressable
           style={styles.addSetButton}
-          onPress={() => dispatch(addSetFunction(itemData.item.id))}
+          onPress={() => addSetFunction(itemData.item.id)}
         >
           <Text style={styles.addSetButtonText}>Add Set</Text>
         </Pressable>
