@@ -25,7 +25,15 @@ function CurrentWorkoutDrawer() {
     (state: RootState) => state.activeExercises.activeExercises
   );
 
-  function editSetWeightActiveExercise({ exerciseId, setId, weight }) {
+  function editSetWeightActiveExercise({
+    exerciseId,
+    setId,
+    weight,
+  }: {
+    exerciseId: number;
+    setId: number;
+    weight: number;
+  }) {
     dispatch(
       editSetWeight({
         exerciseId,
@@ -35,7 +43,15 @@ function CurrentWorkoutDrawer() {
     );
   }
 
-  function editSetRepsActiveExercise({ exerciseId, setId, reps }) {
+  function editSetRepsActiveExercise({
+    exerciseId,
+    setId,
+    reps,
+  }: {
+    exerciseId: number;
+    setId: number;
+    reps: number;
+  }) {
     dispatch(
       editSetReps({
         exerciseId,
@@ -44,18 +60,24 @@ function CurrentWorkoutDrawer() {
       })
     );
   }
-  function addSetActiveExercise(exerciseId) {
+  function addSetActiveExercise(exerciseId: number) {
     dispatch(addSet(exerciseId));
   }
-  function removeActiveSet({ exerciseId, setId }) {
+  function removeActiveSet({
+    exerciseId,
+    setId,
+  }: {
+    exerciseId: number;
+    setId: number;
+  }) {
     dispatch(removeSet({ exerciseId, setId }));
   }
 
-  function removeActiveExerciseFunction(exerciseId) {
-    dispatch(removeActiveExercise({ id: exerciseId }));
+  function removeActiveExerciseFunction({ id }: { id: number }) {
+    dispatch(removeActiveExercise({ id: id }));
   }
 
-  function addActiveExerciseFunction({ name }) {
+  function addActiveExerciseFunction({ name }: { name: string }) {
     dispatch(addActiveExercise({ name: name }));
   }
 

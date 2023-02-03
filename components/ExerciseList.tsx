@@ -5,7 +5,7 @@ interface Props {
   onTap: () => void;
   isActiveWorkout: boolean;
   isHistoryEdit: boolean;
-  addActiveExerciseFunction: ({ name: string }) => any;
+  addActiveExerciseFunction?: ({ name }: { name: string }) => void;
 }
 
 function ExerciseList({
@@ -15,7 +15,10 @@ function ExerciseList({
   addActiveExerciseFunction,
 }: Props) {
   function tapHandler(name: string) {
-    if (isActiveWorkout || isHistoryEdit) {
+    if (
+      (isActiveWorkout || isHistoryEdit) &&
+      addActiveExerciseFunction !== undefined
+    ) {
       addActiveExerciseFunction({ name: name });
     }
     onTap();

@@ -9,12 +9,44 @@ import {
 } from "react-native";
 import { TextInput } from "react-native";
 import { useDispatch } from "react-redux";
+import { Exercise } from "../models/Exercise";
 import { ExerciseSet } from "../models/ExerciseSet";
 import { reset } from "../reduxThings/activeExercises";
 
 interface Props {
   itemData: any;
   exerciseId: number;
+}
+
+interface formProps {
+  exercises: Exercise[];
+  removeExerciseFunction: ({ id }: { id: number }) => void;
+  editSetRepsFunction: ({
+    exerciseId,
+    setId,
+    reps,
+  }: {
+    exerciseId: number;
+    setId: number;
+    reps: number;
+  }) => void;
+  removeSetFunction: ({
+    exerciseId,
+    setId,
+  }: {
+    exerciseId: number;
+    setId: number;
+  }) => void;
+  editSetWeightFunction: ({
+    exerciseId,
+    setId,
+    weight,
+  }: {
+    exerciseId: number;
+    setId: number;
+    weight: number;
+  }) => void;
+  addSetFunction: (id: number) => void;
 }
 
 function ExerciseDrawerForm({
@@ -24,7 +56,7 @@ function ExerciseDrawerForm({
   removeSetFunction,
   editSetWeightFunction,
   addSetFunction,
-}) {
+}: formProps) {
   const dispatch = useDispatch();
 
   function renderSet({ itemData, exerciseId }: Props) {
@@ -44,7 +76,7 @@ function ExerciseDrawerForm({
             editSetWeightFunction({
               exerciseId,
               setId: itemData.item.id,
-              weight: text ?? 0,
+              weight: Number(text) ?? 0,
             })
           }
           style={[styles.detailsContainer, { flex: 1 }]}
@@ -58,7 +90,7 @@ function ExerciseDrawerForm({
             editSetRepsFunction({
               exerciseId,
               setId: itemData.item.id,
-              reps: text ?? 0,
+              reps: Number(text) ?? 0,
             })
           }
         >

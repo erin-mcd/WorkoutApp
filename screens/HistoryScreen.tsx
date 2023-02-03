@@ -6,19 +6,18 @@ import FinishedWorkoutListings from "../components/FinishedWorkoutListings";
 import { SQLError, SQLResultSet, SQLTransaction } from "expo-sqlite";
 const db = SQLite.openDatabase("db.testDb");
 
+const init: any[] = [];
+
 function HistoryScreen() {
-  const [workoutTable, setWorkoutTable] = useState();
+  const [workoutTable, setWorkoutTable] = useState(init);
   function setWorkoutCallback(txObj: any, resultSet: SQLResultSet) {
     setWorkoutTable(resultSet.rows._array);
   }
 
-  const setWorkoutTableFromDB = (db) => {
+  const setWorkoutTableFromDB = (db: SQLite.WebSQLDatabase) => {
     db.transaction((tx: SQLTransaction) => {
-      tx.executeSql(
-        "SELECT * FROM workoutObjects",
-        [],
-        (txObj, resultSet) => setWorkoutCallback(txObj, resultSet),
-        (error: SQLError) => console.log(error)
+      tx.executeSql("SELECT * FROM workoutObjects", [], (txObj, resultSet) =>
+        setWorkoutCallback(txObj, resultSet)
       );
     });
   };

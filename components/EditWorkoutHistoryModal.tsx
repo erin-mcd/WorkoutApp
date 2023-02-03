@@ -43,7 +43,15 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
   function confirmHandler() {
     onClose();
   }
-  function editSetWeightExerciseHistory({ exerciseId, setId, weight }) {
+  function editSetWeightExerciseHistory({
+    exerciseId,
+    setId,
+    weight,
+  }: {
+    exerciseId: number;
+    setId: number;
+    weight: number;
+  }) {
     dispatch(
       editSetWeightHistory({
         exerciseId,
@@ -53,7 +61,15 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
     );
   }
 
-  function editSetRepsExerciseHistory({ exerciseId, setId, reps }) {
+  function editSetRepsExerciseHistory({
+    exerciseId,
+    setId,
+    reps,
+  }: {
+    exerciseId: number;
+    setId: number;
+    reps: number;
+  }) {
     dispatch(
       editSetRepsHistory({
         exerciseId,
@@ -62,18 +78,24 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
       })
     );
   }
-  function addSetHistoryExercise(exerciseId) {
+  function addSetHistoryExercise(exerciseId: number) {
     dispatch(addSetHistory(exerciseId));
   }
-  function removeHistorySet({ exerciseId, setId }) {
+  function removeHistorySet({
+    exerciseId,
+    setId,
+  }: {
+    exerciseId: number;
+    setId: number;
+  }) {
     dispatch(removeSetHistory({ exerciseId, setId }));
   }
 
-  function removeHistoryExerciseFunction(exerciseId) {
-    dispatch(removeExerciseHistory({ id: exerciseId }));
+  function removeHistoryExerciseFunction({ id }: { id: number }) {
+    dispatch(removeExerciseHistory({ id: id }));
   }
 
-  function addHistoryExerciseFunction({ name }) {
+  function addHistoryExerciseFunction({ name }: { name: string }) {
     dispatch(addExerciseHistory({ name: name }));
   }
 

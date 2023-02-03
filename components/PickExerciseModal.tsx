@@ -2,7 +2,17 @@ import React from "react";
 import { StyleSheet, View, Modal } from "react-native";
 import ExerciseList from "./ExerciseList";
 
-function PickExerciseModal({ open, onClose, addActiveExerciseFunction }) {
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  addActiveExerciseFunction: ({ name }: { name: string }) => void;
+}
+
+function PickExerciseModal({
+  open,
+  onClose,
+  addActiveExerciseFunction,
+}: Props) {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>

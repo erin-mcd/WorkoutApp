@@ -113,6 +113,7 @@ const activeExercisesSlices = createSlice({
       addWorkout(jsonObject, state.startDate);
       updateStatsByExercise(state.activeExercises, state.startDate);
       state.activeWorkout = false;
+      state.activeExercises = [];
     },
   },
 });

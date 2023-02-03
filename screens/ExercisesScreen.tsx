@@ -29,7 +29,11 @@ function Exercises({ navigation }: any) {
 
   return (
     <>
-      <ExerciseList onTap={() => console.log("hi")} isActiveWorkout={false} />
+      <ExerciseList
+        onTap={() => console.log("hi")}
+        isActiveWorkout={false}
+        isHistoryEdit={false}
+      />
       <CreateExerciseTypeModal
         open={modalVisible}
         onClose={() => setModalVisible(false)}

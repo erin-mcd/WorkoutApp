@@ -50,7 +50,7 @@ export const dropWorkoutTable = () => {
 
 export const getTable = (tableName: string) => {
   db.transaction((tx) => {
-    tx.executeSql("SELECT * FROM " + tableName, null);
+    tx.executeSql("SELECT * FROM " + tableName);
   });
 };
 
