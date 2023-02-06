@@ -22,6 +22,9 @@ function FinishedWorkoutListings(workouts: any) {
     const maxWeight = Math.max.apply(
       Math,
       sets.map(function (set) {
+        if (set.weight === null) {
+          return -1;
+        }
         return set.weight;
       })
     );
@@ -31,6 +34,9 @@ function FinishedWorkoutListings(workouts: any) {
     const maxReps = Math.max.apply(
       Math,
       setsWithMaxWeight.map(function (set) {
+        if (set.reps === null) {
+          return -1;
+        }
         return set.reps;
       })
     );
@@ -44,6 +50,7 @@ function FinishedWorkoutListings(workouts: any) {
 
     return (
       <View style={styles.exerciseContainer}>
+        <Text style={styles.exerciseName}>{exercise.sets.length + " x "}</Text>
         <Text style={styles.exerciseName}>{itemData.item.name}</Text>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{bestSet.weight}</Text>

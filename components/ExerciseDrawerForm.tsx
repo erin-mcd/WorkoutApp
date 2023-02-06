@@ -65,10 +65,16 @@ function ExerciseDrawerForm({
     return (
       <View style={styles.inputContainer}>
         <View style={[styles.detailsContainer, { flex: 1 }]}>
-          <Text style={styles.detailsText}>1</Text>
+          <Text style={styles.detailsText}>{set.id}</Text>
         </View>
         <View style={[styles.detailsContainer, { flex: 2 }]}>
-          <Text style={styles.detailsText}>{set.weight + "x" + set.reps}</Text>
+          {set.weight !== null && set.reps !== null ? (
+            <Text style={styles.detailsText}>
+              {set.weight + "x" + set.reps}
+            </Text>
+          ) : (
+            <Text style={styles.detailsText}>-------</Text>
+          )}
         </View>
         <TextInput
           keyboardType="number-pad"
