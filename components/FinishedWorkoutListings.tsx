@@ -21,7 +21,7 @@ function FinishedWorkoutListings(workouts: any) {
     const exercise: Exercise = itemData.item;
     return (
       <View style={styles.exerciseContainer}>
-        <Text>{itemData.item.name}</Text>
+        <Text style={styles.exerciseName}>{itemData.item.name}</Text>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{exercise.sets[0].weight}</Text>
           <Text style={styles.detailsText}>{exercise.sets[0].reps}</Text>
@@ -43,7 +43,11 @@ function FinishedWorkoutListings(workouts: any) {
             setModalVisible(true);
           }}
         >
-          <Text>{itemData.item.date}</Text>
+          <Text style={styles.dateText}>{itemData.item.date}</Text>
+          <View style={styles.headerContainer}>
+            <Text style={styles.exerciseText}>Exercise</Text>
+            <Text style={styles.bestSetText}>Best Set</Text>
+          </View>
           <FlatList
             data={workoutObject}
             keyExtractor={(item) => JSON.stringify(item.id)}
@@ -79,13 +83,47 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: 400,
     borderRadius: 8,
+    backgroundColor: "white",
   },
   detailsContainer: {
     marginHorizontal: 10,
     flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-end",
   },
   detailsText: {
     marginHorizontal: 10,
+    fontSize: 16,
   },
-  exerciseContainer: { flexDirection: "row" },
+  exerciseContainer: {
+    flexDirection: "row",
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
+  dateText: {
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "gray",
+    marginVertical: 10,
+    marginLeft: 10,
+  },
+  exerciseName: {
+    fontSize: 16,
+  },
+  exerciseText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  bestSetText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginRight: 20,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "space-between",
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
 });

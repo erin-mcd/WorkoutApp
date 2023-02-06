@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { useState } from "react";
 import FinishedWorkoutListings from "../components/FinishedWorkoutListings";
@@ -27,7 +27,9 @@ function HistoryScreen() {
   return (
     <>
       {workoutTable !== undefined ? (
-        <FinishedWorkoutListings workouts={workoutTable} />
+        <View style={styles.workoutListings}>
+          <FinishedWorkoutListings workouts={workoutTable} />
+        </View>
       ) : null}
     </>
   );
@@ -35,4 +37,8 @@ function HistoryScreen() {
 
 export default HistoryScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  workoutListings: {
+    alignItems: "center",
+  },
+});
