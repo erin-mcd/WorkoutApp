@@ -10,6 +10,8 @@ import StatsScreen from "./screens/StatsScreen";
 import StartWorkoutScreen from "./screens/StartWorkoutScreen";
 import ExercisesScreen from "./screens/ExercisesScreen";
 import { createWorkoutObjectTable } from "./db-service";
+import SettingsScreen from "./screens/Settings";
+
 createWorkoutObjectTable();
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +23,7 @@ function BottomTab() {
       <BottomTabs.Screen name="History" component={HistoryScreen} />
       <BottomTabs.Screen name="StartWorkout" component={StartWorkoutScreen} />
       <BottomTabs.Screen name="Exercises" component={ExercisesScreen} />
+      <BottomTabs.Screen name="Settings" component={SettingsScreen} />
     </BottomTabs.Navigator>
   );
 }

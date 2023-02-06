@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("db.testDb");
+const db = SQLite.openDatabase("db.workoutDB");
 
 export const addName = (currentName: string) => {
   db.transaction((tx) => {

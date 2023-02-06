@@ -105,8 +105,14 @@ const activeExercisesSlices = createSlice({
       state.activeExercises = [];
     },
     startWorkout: (state) => {
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
       state.activeWorkout = true;
-      state.startDate = new Date().toTimeString();
+      state.startDate = new Date().toLocaleDateString(undefined, options);
     },
     endWorkout: (state) => {
       const jsonObject = JSON.stringify(state.activeExercises);

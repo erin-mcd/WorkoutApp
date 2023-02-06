@@ -4,7 +4,7 @@ import * as SQLite from "expo-sqlite";
 import { useState } from "react";
 import FinishedWorkoutListings from "../components/FinishedWorkoutListings";
 import { SQLError, SQLResultSet, SQLTransaction } from "expo-sqlite";
-const db = SQLite.openDatabase("db.testDb");
+const db = SQLite.openDatabase("db.workoutDB");
 
 const init: any[] = [];
 
