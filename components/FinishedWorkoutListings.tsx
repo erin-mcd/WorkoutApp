@@ -12,19 +12,42 @@ import { dropWorkoutTable } from "../db-service";
 import EditWorkoutHistoryModal from "./EditWorkoutHistoryModal";
 import { useDispatch } from "react-redux";
 import { setHistoryValues } from "../reduxThings/editHistory";
+import { ExerciseSet } from "../models/ExerciseSet";
 
 function FinishedWorkoutListings(workouts: any) {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
+  function findBestSet(sets: ExerciseSet[]) {
+    const maxWeight = Math.max.apply(
+      Math,
+      sets.map(function (set) {
+        return set.weight;
+      })
+    );
+
+    const setsWithMaxWeight = sets.filter((set) => set.weight === maxWeight);
+
+    const maxReps = Math.max.apply(
+      Math,
+      setsWithMaxWeight.map(function (set) {
+        return set.reps;
+      })
+    );
+
+    return { weight: maxWeight, reps: maxReps };
+  }
+
   function renderExercise(itemData: any) {
     const exercise: Exercise = itemData.item;
+    const bestSet = findBestSet(exercise.sets);
+
     return (
       <View style={styles.exerciseContainer}>
         <Text style={styles.exerciseName}>{itemData.item.name}</Text>
         <View style={styles.detailsContainer}>
-          <Text style={styles.detailsText}>{exercise.sets[0].weight}</Text>
-          <Text style={styles.detailsText}>{exercise.sets[0].reps}</Text>
+          <Text style={styles.detailsText}>{bestSet.weight}</Text>
+          <Text style={styles.detailsText}>{bestSet.reps}</Text>
         </View>
       </View>
     );
