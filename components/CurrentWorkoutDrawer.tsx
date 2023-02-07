@@ -2,12 +2,15 @@ import React from "react";
 import { StyleSheet, View, Text, Button, Pressable } from "react-native";
 // @ts-ignore
 import BottomDrawer from "react-native-bottom-drawer-view";
-import { addActiveExercise, endWorkout } from "../reduxThings/activeExercises";
+import {
+  addActiveExercise,
+  cancelWorkout,
+  endWorkout,
+} from "../reduxThings/activeExercises";
 import { useDispatch, useSelector } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
 import { useState } from "react";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
-import { getTable } from "../db-service";
 import { Exercise } from "../models/Exercise";
 import { RootState } from "../reduxThings/store";
 import {
@@ -101,14 +104,22 @@ function CurrentWorkoutDrawer() {
           />
           <Pressable
             onPress={() => setModalVisible(true)}
-            style={styles.addExerciseButton}
+            style={({ pressed }) => [
+              styles.addExerciseButton,
+              pressed ? styles.buttonPressed : null,
+            ]}
           >
             <Text style={styles.addExerciseText}>Add an Exercise</Text>
           </Pressable>
-          <Button
-            title={"print table"}
-            onPress={() => getTable("workoutObjects")}
-          />
+          <Pressable
+            onPress={() => dispatch(cancelWorkout())}
+            style={({ pressed }) => [
+              styles.cancelExerciseButton,
+              pressed ? styles.buttonPressed : null,
+            ]}
+          >
+            <Text style={styles.addExerciseText}>Cancel Workout</Text>
+          </Pressable>
         </View>
       </BottomDrawer>
       <PickExerciseModal
@@ -144,5 +155,15 @@ const styles = StyleSheet.create({
   drawer: {
     flex: 1,
     alignItems: "center",
+  },
+  buttonPressed: {
+    opacity: 0.5,
+  },
+  cancelExerciseButton: {
+    backgroundColor: "#ff7885",
+    padding: 10,
+    width: "80%",
+    borderRadius: 8,
+    marginTop: 10,
   },
 });

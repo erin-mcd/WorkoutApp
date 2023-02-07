@@ -123,6 +123,10 @@ const activeExercisesSlices = createSlice({
       state.activeWorkout = false;
       state.activeExercises = [];
     },
+    cancelWorkout: (state) => {
+      state.activeExercises = [];
+      state.activeWorkout = false;
+    },
   },
 });
 
@@ -137,4 +141,5 @@ export const editSetReps = activeExercisesSlices.actions.editSetReps;
 export const reset = activeExercisesSlices.actions.reset;
 export const startWorkout = activeExercisesSlices.actions.startWorkout;
 export const endWorkout = activeExercisesSlices.actions.endWorkout;
+export const cancelWorkout = activeExercisesSlices.actions.cancelWorkout;
 export default activeExercisesSlices.reducer;

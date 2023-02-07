@@ -27,9 +27,9 @@ const editHistorySlices = createSlice({
       });
 
       const newSet = {
-        weight: 0,
-        reps: 0,
-        id: Math.random(),
+        weight: null,
+        reps: null,
+        id: state.historyExercises[index].sets.length + 1,
       };
       state.historyExercises[index].sets.push(newSet);
     },

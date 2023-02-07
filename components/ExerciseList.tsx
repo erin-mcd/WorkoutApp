@@ -61,9 +61,7 @@ const styles = StyleSheet.create({
   exerciseListItem: {
     borderBottomColor: "gray",
     borderBottomWidth: 1,
-    borderRadius: 10,
     padding: 10,
     margin: 4,
-    width: 300,
   },
 });

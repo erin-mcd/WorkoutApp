@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     width: 400,
     borderRadius: 8,
     backgroundColor: "white",
+    marginVertical: 6,
   },
   detailsContainer: {
     marginHorizontal: 10,
