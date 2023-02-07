@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("db.testDb");
+const db = SQLite.openDatabase("db.workoutDB");
 
 export const addName = (currentName: string) => {
   db.transaction((tx) => {
@@ -13,6 +13,18 @@ export const addWorkout = (jsonObject: string, startDate: string) => {
       "INSERT INTO workoutObjects (jsonObject, date) values (?, ?)",
       [jsonObject, startDate]
     );
+  });
+};
+
+export const editWorkoutHistory = (
+  newJsonObject: string,
+  workoutId: number
+) => {
+  db.transaction((tx) => {
+    tx.executeSql("UPDATE workoutObjects SET jsonObject = ? WHERE id= ?", [
+      newJsonObject,
+      workoutId,
+    ]);
   });
 };
 
@@ -38,7 +50,7 @@ export const dropWorkoutTable = () => {
 
 export const getTable = (tableName: string) => {
   db.transaction((tx) => {
-    tx.executeSql("SELECT * FROM " + tableName, null);
+    tx.executeSql("SELECT * FROM " + tableName);
   });
 };
 

@@ -1,19 +1,25 @@
 import React from "react";
 import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { addActiveExercise } from "../reduxThings/activeExercises";
 interface Props {
   onTap: () => void;
   isActiveWorkout: boolean;
+  isHistoryEdit: boolean;
+  addActiveExerciseFunction?: ({ name }: { name: string }) => void;
 }
 
-function ExerciseList({ onTap, isActiveWorkout = false }: Props) {
-  const dispatch = useDispatch();
-
+function ExerciseList({
+  onTap,
+  isActiveWorkout = false,
+  isHistoryEdit = false,
+  addActiveExerciseFunction,
+}: Props) {
   function tapHandler(name: string) {
-    if (isActiveWorkout) {
-      dispatch(addActiveExercise({ name: name }));
+    if (
+      (isActiveWorkout || isHistoryEdit) &&
+      addActiveExerciseFunction !== undefined
+    ) {
+      addActiveExerciseFunction({ name: name });
     }
     onTap();
   }

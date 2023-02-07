@@ -7,7 +7,6 @@ const init: Exercise[] = [];
 
 function updateStatsByExercise(finishedExercises: Exercise[], date: string) {
   finishedExercises.forEach((exercise) => {
-    console.log("shuold create table for " + exercise.name);
     createExerciseStatTable(exercise.name);
     exercise.sets.forEach((set) => {
       console.log(
@@ -15,7 +14,10 @@ function updateStatsByExercise(finishedExercises: Exercise[], date: string) {
           exercise.name +
           JSON.stringify({ date: date, weight: set.weight, reps: set.reps })
       );
-      addSetToExerciseStatTable(exercise.name, date, set.weight, set.reps);
+
+      if (set.weight !== null && set.reps !== null) {
+        addSetToExerciseStatTable(exercise.name, date, set.weight, set.reps);
+      }
     });
   });
 }
@@ -34,9 +36,9 @@ const activeExercisesSlices = createSlice({
       });
 
       const newSet = {
-        weight: 0,
-        reps: 0,
-        id: Math.random(),
+        weight: null,
+        reps: null,
+        id: state.activeExercises[index].sets.length + 1,
       };
       state.activeExercises[index].sets.push(newSet);
     },
@@ -86,9 +88,9 @@ const activeExercisesSlices = createSlice({
         name: action.payload.name,
         sets: [
           {
-            weight: 0,
-            reps: 0,
-            id: 0,
+            weight: null,
+            reps: null,
+            id: 1,
           },
         ],
       };
@@ -107,13 +109,19 @@ const activeExercisesSlices = createSlice({
     },
     startWorkout: (state) => {
       state.activeWorkout = true;
-      state.startDate = new Date().toTimeString();
+      state.startDate = new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     },
     endWorkout: (state) => {
       const jsonObject = JSON.stringify(state.activeExercises);
       addWorkout(jsonObject, state.startDate);
       updateStatsByExercise(state.activeExercises, state.startDate);
       state.activeWorkout = false;
+      state.activeExercises = [];
     },
   },
 });

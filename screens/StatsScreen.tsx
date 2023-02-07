@@ -2,7 +2,7 @@ import { SQLError, SQLResultSet, SQLTransaction } from "expo-sqlite";
 import React, { useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("db.testDb");
+const db = SQLite.openDatabase("db.workoutDB");
 
 function StatsScreen() {
   const [statTable, setStatTable] = useState();
