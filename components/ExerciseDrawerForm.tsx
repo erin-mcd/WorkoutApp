@@ -11,8 +11,6 @@ import { TextInput } from "react-native";
 import { Exercise } from "../models/Exercise";
 import { ExerciseSet } from "../models/ExerciseSet";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useDispatch, useSelector } from "react-redux";
-import { setPickExerciseModalVisible } from "../reduxThings/activeExercises";
 import ButtonsComponent from "./ButtonsComponent";
 interface Props {
   itemData: any;
@@ -62,8 +60,6 @@ function ExerciseDrawerForm({
   cancelFunction,
   showPickExerciseModalFunction,
 }: formProps) {
-  const dispatch = useDispatch();
-
   function renderSet({ itemData, exerciseId }: Props) {
     const set: ExerciseSet = itemData.item;
     const rightAction = (

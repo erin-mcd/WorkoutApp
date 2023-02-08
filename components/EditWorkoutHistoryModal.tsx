@@ -2,7 +2,6 @@ import React from "react";
 import { Text, StyleSheet, View, Pressable, Modal, Button } from "react-native";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { Exercise } from "../models/Exercise";
-import { useState } from "react";
 import PickExerciseModal from "./PickExerciseModal";
 import {
   addExerciseHistory,
@@ -23,8 +22,6 @@ interface Props {
   onClose: () => void;
 }
 
-const init: Exercise[] = [];
-
 function EditWorkoutHistoryModal({ open, onClose }: Props) {
   const workoutHistory: Exercise[] = useSelector(
     (state: RootState) => state.editHistory.historyExercises
@@ -33,71 +30,6 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
     (state: RootState) => state.editHistory.pickExerciseModalVisible
   );
   const dispatch = useDispatch();
-
-  function editSetWeightExerciseHistory({
-    exerciseId,
-    setId,
-    weight,
-  }: {
-    exerciseId: number;
-    setId: number;
-    weight: number;
-  }) {
-    dispatch(
-      editSetWeightHistory({
-        exerciseId,
-        setId,
-        weight,
-      })
-    );
-  }
-
-  function editSetRepsExerciseHistory({
-    exerciseId,
-    setId,
-    reps,
-  }: {
-    exerciseId: number;
-    setId: number;
-    reps: number;
-  }) {
-    dispatch(
-      editSetRepsHistory({
-        exerciseId,
-        setId,
-        reps,
-      })
-    );
-  }
-  function addSetHistoryExercise(exerciseId: number) {
-    dispatch(addSetHistory(exerciseId));
-  }
-  function removeHistorySet({
-    exerciseId,
-    setId,
-  }: {
-    exerciseId: number;
-    setId: number;
-  }) {
-    dispatch(removeSetHistory({ exerciseId, setId }));
-  }
-
-  function removeHistoryExerciseFunction({ id }: { id: number }) {
-    dispatch(removeExerciseHistory({ id: id }));
-  }
-
-  function addHistoryExerciseFunction({ name }: { name: string }) {
-    dispatch(addExerciseHistory({ name: name }));
-  }
-  function cancelEditFunction() {
-    console.log("close");
-    dispatch(setIsEditing(false));
-    onClose();
-  }
-
-  function showPickExerciseModal() {
-    dispatch(setPickExerciseHistoryModalVisible(true));
-  }
 
   return (
     <Modal animationType="slide" transparent={true} visible={open}>
@@ -114,19 +46,46 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
           </Pressable>
           <ExerciseDrawerForm
             exercises={workoutHistory}
-            editSetWeightFunction={editSetWeightExerciseHistory}
-            editSetRepsFunction={editSetRepsExerciseHistory}
-            addSetFunction={addSetHistoryExercise}
-            removeSetFunction={removeHistorySet}
-            removeExerciseFunction={removeHistoryExerciseFunction}
-            cancelFunction={cancelEditFunction}
-            showPickExerciseModalFunction={showPickExerciseModal}
+            editSetWeightFunction={({ exerciseId, setId, weight }) =>
+              dispatch(
+                editSetWeightHistory({
+                  exerciseId,
+                  setId,
+                  weight,
+                })
+              )
+            }
+            editSetRepsFunction={({ exerciseId, setId, reps }) =>
+              dispatch(
+                editSetRepsHistory({
+                  exerciseId,
+                  setId,
+                  reps,
+                })
+              )
+            }
+            addSetFunction={(exerciseId) => dispatch(addSetHistory(exerciseId))}
+            removeSetFunction={({ exerciseId, setId }) =>
+              dispatch(removeSetHistory({ exerciseId, setId }))
+            }
+            removeExerciseFunction={(id) =>
+              dispatch(removeExerciseHistory({ id }))
+            }
+            cancelFunction={() => {
+              dispatch(setIsEditing(false));
+              onClose();
+            }}
+            showPickExerciseModalFunction={() =>
+              dispatch(setPickExerciseHistoryModalVisible(true))
+            }
           />
         </View>
         <PickExerciseModal
           open={pickExerciseModalVisible}
           onClose={() => setPickExerciseHistoryModalVisible(false)}
-          addExerciseFunction={addHistoryExerciseFunction}
+          addExerciseFunction={({ name }) =>
+            dispatch(addExerciseHistory({ name }))
+          }
         />
       </View>
     </Modal>

@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addExerciseType } from "../reduxThings/exerciseTypes";
 
 interface Props {

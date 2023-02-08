@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button, Pressable } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 // @ts-ignore
 import BottomDrawer from "react-native-bottom-drawer-view";
 import {
@@ -9,7 +9,6 @@ import {
 } from "../reduxThings/activeExercises";
 import { useDispatch, useSelector } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
-import { useState } from "react";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { Exercise } from "../models/Exercise";
 import { RootState } from "../reduxThings/store";
@@ -31,69 +30,6 @@ function CurrentWorkoutDrawer() {
     (state: RootState) => state.activeExercises.pickExerciseModalVisible
   );
 
-  function editSetWeightActiveExercise({
-    exerciseId,
-    setId,
-    weight,
-  }: {
-    exerciseId: number;
-    setId: number;
-    weight: number;
-  }) {
-    dispatch(
-      editSetWeight({
-        exerciseId,
-        setId,
-        weight,
-      })
-    );
-  }
-
-  function editSetRepsActiveExercise({
-    exerciseId,
-    setId,
-    reps,
-  }: {
-    exerciseId: number;
-    setId: number;
-    reps: number;
-  }) {
-    dispatch(
-      editSetReps({
-        exerciseId,
-        setId,
-        reps,
-      })
-    );
-  }
-  function addSetActiveExercise(exerciseId: number) {
-    dispatch(addSet(exerciseId));
-  }
-  function removeActiveSet({
-    exerciseId,
-    setId,
-  }: {
-    exerciseId: number;
-    setId: number;
-  }) {
-    dispatch(removeSet({ exerciseId, setId }));
-  }
-
-  function removeActiveExerciseFunction({ id }: { id: number }) {
-    dispatch(removeActiveExercise({ id: id }));
-  }
-
-  function addActiveExerciseFunction({ name }: { name: string }) {
-    dispatch(addActiveExercise({ name: name }));
-  }
-  function cancelWorkoutFunction() {
-    dispatch(cancelWorkout());
-  }
-
-  function showPickExerciseModal() {
-    dispatch(setPickExerciseModalVisible(true));
-  }
-
   return (
     <>
       <BottomDrawer containerHeight={800} downDisplay={500}>
@@ -106,20 +42,44 @@ function CurrentWorkoutDrawer() {
           </Pressable>
           <ExerciseDrawerForm
             exercises={activeExercises}
-            removeExerciseFunction={removeActiveExerciseFunction}
-            removeSetFunction={removeActiveSet}
-            addSetFunction={addSetActiveExercise}
-            editSetRepsFunction={editSetRepsActiveExercise}
-            editSetWeightFunction={editSetWeightActiveExercise}
-            cancelFunction={cancelWorkoutFunction}
-            showPickExerciseModalFunction={showPickExerciseModal}
+            removeExerciseFunction={({ id }) =>
+              dispatch(removeActiveExercise({ id }))
+            }
+            removeSetFunction={({ exerciseId, setId }) =>
+              dispatch(removeSet({ exerciseId, setId }))
+            }
+            addSetFunction={(exerciseId) => dispatch(addSet(exerciseId))}
+            editSetRepsFunction={({ exerciseId, setId, reps }) =>
+              dispatch(
+                editSetReps({
+                  exerciseId,
+                  setId,
+                  reps,
+                })
+              )
+            }
+            editSetWeightFunction={({ exerciseId, setId, weight }) =>
+              dispatch(
+                editSetWeight({
+                  exerciseId,
+                  setId,
+                  weight,
+                })
+              )
+            }
+            cancelFunction={() => dispatch(cancelWorkout())}
+            showPickExerciseModalFunction={() =>
+              dispatch(setPickExerciseModalVisible(true))
+            }
           />
         </View>
       </BottomDrawer>
       <PickExerciseModal
         open={pickExerciseModalVisible}
         onClose={() => setPickExerciseModalVisible(false)}
-        addExerciseFunction={addActiveExerciseFunction}
+        addExerciseFunction={({ name }) =>
+          dispatch(addActiveExercise({ name }))
+        }
       />
     </>
   );
