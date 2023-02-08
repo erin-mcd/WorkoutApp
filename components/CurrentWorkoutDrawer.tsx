@@ -4,8 +4,8 @@ import { StyleSheet, View, Text, Button, Pressable } from "react-native";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import {
   addActiveExercise,
-  cancelWorkout,
   endWorkout,
+  setPickExerciseModalVisible,
 } from "../reduxThings/activeExercises";
 import { useDispatch, useSelector } from "react-redux";
 import PickExerciseModal from "./PickExerciseModal";
@@ -19,13 +19,16 @@ import {
   removeSet,
   editSetReps,
   editSetWeight,
+  cancelWorkout,
 } from "../reduxThings/activeExercises";
 
 function CurrentWorkoutDrawer() {
   const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
   const activeExercises: Exercise[] = useSelector(
     (state: RootState) => state.activeExercises.activeExercises
+  );
+  const pickExerciseModalVisible: boolean = useSelector(
+    (state: RootState) => state.activeExercises.pickExerciseModalVisible
   );
 
   function editSetWeightActiveExercise({
@@ -83,6 +86,13 @@ function CurrentWorkoutDrawer() {
   function addActiveExerciseFunction({ name }: { name: string }) {
     dispatch(addActiveExercise({ name: name }));
   }
+  function cancelWorkoutFunction() {
+    dispatch(cancelWorkout());
+  }
+
+  function showPickExerciseModal() {
+    dispatch(setPickExerciseModalVisible(true));
+  }
 
   return (
     <>
@@ -101,31 +111,15 @@ function CurrentWorkoutDrawer() {
             addSetFunction={addSetActiveExercise}
             editSetRepsFunction={editSetRepsActiveExercise}
             editSetWeightFunction={editSetWeightActiveExercise}
+            cancelFunction={cancelWorkoutFunction}
+            showPickExerciseModalFunction={showPickExerciseModal}
           />
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            style={({ pressed }) => [
-              styles.addExerciseButton,
-              pressed ? styles.buttonPressed : null,
-            ]}
-          >
-            <Text style={styles.addExerciseText}>Add an Exercise</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => dispatch(cancelWorkout())}
-            style={({ pressed }) => [
-              styles.cancelExerciseButton,
-              pressed ? styles.buttonPressed : null,
-            ]}
-          >
-            <Text style={styles.addExerciseText}>Cancel Workout</Text>
-          </Pressable>
         </View>
       </BottomDrawer>
       <PickExerciseModal
-        open={modalVisible}
-        onClose={() => setModalVisible(false)}
-        addActiveExerciseFunction={addActiveExerciseFunction}
+        open={pickExerciseModalVisible}
+        onClose={() => setPickExerciseModalVisible(false)}
+        addExerciseFunction={addActiveExerciseFunction}
       />
     </>
   );
@@ -143,27 +137,12 @@ const styles = StyleSheet.create({
     color: "green",
     fontSize: 20,
   },
-  addExerciseButton: {
-    backgroundColor: "gray",
-    padding: 10,
-    width: "80%",
-    borderRadius: 8,
-  },
-  addExerciseText: {
-    textAlign: "center",
-  },
+
   drawer: {
     flex: 1,
     alignItems: "center",
   },
   buttonPressed: {
     opacity: 0.5,
-  },
-  cancelExerciseButton: {
-    backgroundColor: "#ff7885",
-    padding: 10,
-    width: "80%",
-    borderRadius: 8,
-    marginTop: 10,
   },
 });

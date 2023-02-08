@@ -11,7 +11,9 @@ import { TextInput } from "react-native";
 import { Exercise } from "../models/Exercise";
 import { ExerciseSet } from "../models/ExerciseSet";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setPickExerciseModalVisible } from "../reduxThings/activeExercises";
+import ButtonsComponent from "./ButtonsComponent";
 interface Props {
   itemData: any;
   exerciseId: number;
@@ -46,6 +48,8 @@ interface formProps {
     weight: number;
   }) => void;
   addSetFunction: (id: number) => void;
+  cancelFunction: () => void;
+  showPickExerciseModalFunction: () => void;
 }
 
 function ExerciseDrawerForm({
@@ -55,7 +59,11 @@ function ExerciseDrawerForm({
   removeSetFunction,
   editSetWeightFunction,
   addSetFunction,
+  cancelFunction,
+  showPickExerciseModalFunction,
 }: formProps) {
+  const dispatch = useDispatch();
+
   function renderSet({ itemData, exerciseId }: Props) {
     const set: ExerciseSet = itemData.item;
     const rightAction = (
@@ -143,6 +151,7 @@ function ExerciseDrawerForm({
 
   function renderExercises(itemData: any) {
     const exerciseId = itemData.item.id;
+
     return (
       <View>
         <View style={styles.exerciseNameContainer}>
@@ -184,14 +193,18 @@ function ExerciseDrawerForm({
   }
 
   return (
-    <View style={{ height: 400 }}>
-      <View>
-        <FlatList
-          data={exercises}
-          keyExtractor={(item) => item.name}
-          renderItem={renderExercises}
-        />
-      </View>
+    <View style={styles.contentContainer}>
+      <FlatList
+        data={exercises}
+        keyExtractor={(item) => JSON.stringify(item.id)}
+        renderItem={renderExercises}
+        ListFooterComponent={
+          <ButtonsComponent
+            cancelEditFunction={cancelFunction}
+            showPickExerciseModalFunction={showPickExerciseModalFunction}
+          />
+        }
+      />
     </View>
   );
 }
@@ -233,6 +246,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 30,
     marginTop: 10,
+    marginBottom: 20,
     justifyContent: "center",
   },
   addSetButtonText: {
@@ -258,5 +272,28 @@ const styles = StyleSheet.create({
   },
   deleteExerciseText: {
     color: "red",
+  },
+  addExerciseButton: {
+    backgroundColor: "gray",
+    padding: 10,
+    width: 350,
+    borderRadius: 8,
+  },
+  addExerciseText: {
+    textAlign: "center",
+  },
+  cancelWorkoutButton: {
+    backgroundColor: "#ff7885",
+    padding: 10,
+    width: 350,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  cancelWorkoutText: {
+    textAlign: "center",
+  },
+  contentContainer: {
+    height: 400,
+    alignItems: "center",
   },
 });

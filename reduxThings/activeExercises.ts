@@ -28,6 +28,7 @@ const activeExercisesSlices = createSlice({
     activeWorkout: false,
     activeExercises: init,
     startDate: "",
+    pickExerciseModalVisible: false,
   },
   reducers: {
     addSet: (state, action) => {
@@ -95,6 +96,7 @@ const activeExercisesSlices = createSlice({
         ],
       };
       state.activeExercises.push(newExercise);
+      state.pickExerciseModalVisible = false;
     },
     removeActiveExercise: (state, action) => {
       state.activeExercises.splice(
@@ -127,6 +129,9 @@ const activeExercisesSlices = createSlice({
       state.activeExercises = [];
       state.activeWorkout = false;
     },
+    setPickExerciseModalVisible: (state, action) => {
+      state.pickExerciseModalVisible = action.payload;
+    },
   },
 });
 
@@ -142,4 +147,6 @@ export const reset = activeExercisesSlices.actions.reset;
 export const startWorkout = activeExercisesSlices.actions.startWorkout;
 export const endWorkout = activeExercisesSlices.actions.endWorkout;
 export const cancelWorkout = activeExercisesSlices.actions.cancelWorkout;
+export const setPickExerciseModalVisible =
+  activeExercisesSlices.actions.setPickExerciseModalVisible;
 export default activeExercisesSlices.reducer;

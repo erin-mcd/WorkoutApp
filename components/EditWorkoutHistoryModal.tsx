@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  View,
-  Pressable,
-  Modal,
-  Alert,
-  Button,
-} from "react-native";
+import { Text, StyleSheet, View, Pressable, Modal, Button } from "react-native";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { Exercise } from "../models/Exercise";
 import { useState } from "react";
@@ -21,10 +12,11 @@ import {
   endHistoryEdit,
   removeExerciseHistory,
   removeSetHistory,
-  setHistoryValues,
+  setIsEditing,
 } from "../reduxThings/editHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reduxThings/store";
+import { setPickExerciseHistoryModalVisible } from "../reduxThings/editHistory";
 
 interface Props {
   open: boolean;
@@ -34,15 +26,14 @@ interface Props {
 const init: Exercise[] = [];
 
 function EditWorkoutHistoryModal({ open, onClose }: Props) {
-  const [modalVisible, setModalVisible] = useState(false);
   const workoutHistory: Exercise[] = useSelector(
     (state: RootState) => state.editHistory.historyExercises
   );
+  const pickExerciseModalVisible: boolean = useSelector(
+    (state: RootState) => state.editHistory.pickExerciseModalVisible
+  );
   const dispatch = useDispatch();
 
-  function confirmHandler() {
-    onClose();
-  }
   function editSetWeightExerciseHistory({
     exerciseId,
     setId,
@@ -98,12 +89,20 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
   function addHistoryExerciseFunction({ name }: { name: string }) {
     dispatch(addExerciseHistory({ name: name }));
   }
+  function cancelEditFunction() {
+    console.log("close");
+    dispatch(setIsEditing(false));
+    onClose();
+  }
+
+  function showPickExerciseModal() {
+    dispatch(setPickExerciseHistoryModalVisible(true));
+  }
 
   return (
     <Modal animationType="slide" transparent={true} visible={open}>
       <View style={styles.modelContentsContainer}>
         <View style={styles.innerContainer}>
-          <Button title="close" onPress={() => confirmHandler()} />
           <Pressable
             style={styles.finishButton}
             onPress={() => {
@@ -113,10 +112,6 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
           >
             <Text style={styles.finishButtonText}>Finish</Text>
           </Pressable>
-          <Button
-            title="print"
-            onPress={() => console.log(JSON.stringify(workoutHistory))}
-          />
           <ExerciseDrawerForm
             exercises={workoutHistory}
             editSetWeightFunction={editSetWeightExerciseHistory}
@@ -124,18 +119,14 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
             addSetFunction={addSetHistoryExercise}
             removeSetFunction={removeHistorySet}
             removeExerciseFunction={removeHistoryExerciseFunction}
+            cancelFunction={cancelEditFunction}
+            showPickExerciseModalFunction={showPickExerciseModal}
           />
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            style={styles.addExerciseButton}
-          >
-            <Text style={styles.addExerciseText}>Add an Exercise</Text>
-          </Pressable>
         </View>
         <PickExerciseModal
-          open={modalVisible}
-          onClose={() => setModalVisible(false)}
-          addActiveExerciseFunction={addHistoryExerciseFunction}
+          open={pickExerciseModalVisible}
+          onClose={() => setPickExerciseHistoryModalVisible(false)}
+          addExerciseFunction={addHistoryExerciseFunction}
         />
       </View>
     </Modal>
@@ -198,7 +189,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     backgroundColor: "white",
     borderRadius: 10,
-    height: "60%",
+    height: "70%",
     marginBottom: 80,
     alignContent: "center",
     justifyContent: "center",

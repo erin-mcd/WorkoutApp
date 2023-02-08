@@ -15,6 +15,8 @@ const editHistorySlices = createSlice({
   initialState: {
     historyExercises: init,
     id: initId,
+    isEditing: false,
+    pickExerciseModalVisible: false,
   },
   reducers: {
     setHistoryValues: (state, action) => {
@@ -83,13 +85,14 @@ const editHistorySlices = createSlice({
         name: action.payload.name,
         sets: [
           {
-            weight: 0,
-            reps: 0,
-            id: 0,
+            weight: null,
+            reps: null,
+            id: 1,
           },
         ],
       };
       state.historyExercises.push(newExercise);
+      state.pickExerciseModalVisible = false;
     },
     removeExerciseHistory: (state, action) => {
       state.historyExercises.splice(
@@ -107,6 +110,12 @@ const editHistorySlices = createSlice({
       const newJsonObject = JSON.stringify(state.historyExercises);
       editWorkoutHistory(newJsonObject, state.id);
     },
+    setIsEditing: (state, action) => {
+      state.isEditing = action.payload;
+    },
+    setPickExerciseHistoryModalVisible: (state, action) => {
+      state.pickExerciseModalVisible = action.payload;
+    },
   },
 });
 
@@ -121,4 +130,7 @@ export const editSetRepsHistory = editHistorySlices.actions.editSetRepsHistory;
 export const resetHistory = editHistorySlices.actions.resetHistory;
 export const endHistoryEdit = editHistorySlices.actions.endHistoryEdit;
 export const setHistoryValues = editHistorySlices.actions.setHistoryValues;
+export const setIsEditing = editHistorySlices.actions.setIsEditing;
+export const setPickExerciseHistoryModalVisible =
+  editHistorySlices.actions.setPickExerciseHistoryModalVisible;
 export default editHistorySlices.reducer;

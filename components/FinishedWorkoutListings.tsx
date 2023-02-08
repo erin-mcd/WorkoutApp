@@ -10,13 +10,16 @@ import {
 import { Exercise } from "../models/Exercise";
 import { dropWorkoutTable } from "../db-service";
 import EditWorkoutHistoryModal from "./EditWorkoutHistoryModal";
-import { useDispatch } from "react-redux";
-import { setHistoryValues } from "../reduxThings/editHistory";
+import { useDispatch, useSelector } from "react-redux";
+import { setHistoryValues, setIsEditing } from "../reduxThings/editHistory";
 import { ExerciseSet } from "../models/ExerciseSet";
+import { RootState } from "../reduxThings/store";
 
 function FinishedWorkoutListings(workouts: any) {
-  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const editModalVisible: boolean = useSelector(
+    (state: RootState) => state.editHistory.isEditing
+  );
 
   function findBestSet(sets: ExerciseSet[]) {
     const maxWeight = Math.max.apply(
@@ -70,7 +73,7 @@ function FinishedWorkoutListings(workouts: any) {
             dispatch(
               setHistoryValues({ workoutObject: workoutObject, id: workoutId })
             );
-            setModalVisible(true);
+            dispatch(setIsEditing(true));
           }}
         >
           <Text style={styles.dateText}>{itemData.item.date}</Text>
@@ -85,8 +88,8 @@ function FinishedWorkoutListings(workouts: any) {
           />
         </Pressable>
         <EditWorkoutHistoryModal
-          open={modalVisible}
-          onClose={() => setModalVisible(false)}
+          open={editModalVisible}
+          onClose={() => dispatch(setIsEditing(false))}
         />
       </View>
     );
