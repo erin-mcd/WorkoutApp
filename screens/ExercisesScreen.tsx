@@ -29,11 +29,13 @@ function Exercises({ navigation }: any) {
 
   return (
     <>
-      <ExerciseList
-        onTap={() => console.log("hi")}
-        isActiveWorkout={false}
-        isHistoryEdit={false}
-      />
+      <View style={styles.exerciseList}>
+        <ExerciseList
+          onTap={() => console.log("hi")}
+          isActiveWorkout={false}
+          isHistoryEdit={false}
+        />
+      </View>
       <CreateExerciseTypeModal
         open={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -50,17 +52,6 @@ const styles = StyleSheet.create({
   exerciseList: {
     flex: 1,
     padding: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  exerciseListItem: {
-    backgroundColor: "gray",
-    borderRadius: 10,
-    padding: 10,
-    margin: 4,
-    width: 300,
-  },
-  exerciseListItemText: {
-    color: "white",
+    backgroundColor: "white",
   },
 });

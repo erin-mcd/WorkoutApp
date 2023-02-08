@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  View,
-  Pressable,
-  Modal,
-  Alert,
-  Button,
-} from "react-native";
+import { Text, StyleSheet, View, Pressable, Modal, Button } from "react-native";
 import ExerciseDrawerForm from "./ExerciseDrawerForm";
 import { Exercise } from "../models/Exercise";
-import { useState } from "react";
 import PickExerciseModal from "./PickExerciseModal";
 import {
   addExerciseHistory,
@@ -21,89 +11,30 @@ import {
   endHistoryEdit,
   removeExerciseHistory,
   removeSetHistory,
-  setHistoryValues,
+  setIsEditing,
 } from "../reduxThings/editHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reduxThings/store";
+import { setPickExerciseHistoryModalVisible } from "../reduxThings/editHistory";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-const init: Exercise[] = [];
-
 function EditWorkoutHistoryModal({ open, onClose }: Props) {
-  const [modalVisible, setModalVisible] = useState(false);
   const workoutHistory: Exercise[] = useSelector(
     (state: RootState) => state.editHistory.historyExercises
   );
+  const pickExerciseModalVisible: boolean = useSelector(
+    (state: RootState) => state.editHistory.pickExerciseModalVisible
+  );
   const dispatch = useDispatch();
-
-  function confirmHandler() {
-    onClose();
-  }
-  function editSetWeightExerciseHistory({
-    exerciseId,
-    setId,
-    weight,
-  }: {
-    exerciseId: number;
-    setId: number;
-    weight: number;
-  }) {
-    dispatch(
-      editSetWeightHistory({
-        exerciseId,
-        setId,
-        weight,
-      })
-    );
-  }
-
-  function editSetRepsExerciseHistory({
-    exerciseId,
-    setId,
-    reps,
-  }: {
-    exerciseId: number;
-    setId: number;
-    reps: number;
-  }) {
-    dispatch(
-      editSetRepsHistory({
-        exerciseId,
-        setId,
-        reps,
-      })
-    );
-  }
-  function addSetHistoryExercise(exerciseId: number) {
-    dispatch(addSetHistory(exerciseId));
-  }
-  function removeHistorySet({
-    exerciseId,
-    setId,
-  }: {
-    exerciseId: number;
-    setId: number;
-  }) {
-    dispatch(removeSetHistory({ exerciseId, setId }));
-  }
-
-  function removeHistoryExerciseFunction({ id }: { id: number }) {
-    dispatch(removeExerciseHistory({ id: id }));
-  }
-
-  function addHistoryExerciseFunction({ name }: { name: string }) {
-    dispatch(addExerciseHistory({ name: name }));
-  }
 
   return (
     <Modal animationType="slide" transparent={true} visible={open}>
       <View style={styles.modelContentsContainer}>
         <View style={styles.innerContainer}>
-          <Button title="close" onPress={() => confirmHandler()} />
           <Pressable
             style={styles.finishButton}
             onPress={() => {
@@ -113,29 +44,48 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
           >
             <Text style={styles.finishButtonText}>Finish</Text>
           </Pressable>
-          <Button
-            title="print"
-            onPress={() => console.log(JSON.stringify(workoutHistory))}
-          />
           <ExerciseDrawerForm
             exercises={workoutHistory}
-            editSetWeightFunction={editSetWeightExerciseHistory}
-            editSetRepsFunction={editSetRepsExerciseHistory}
-            addSetFunction={addSetHistoryExercise}
-            removeSetFunction={removeHistorySet}
-            removeExerciseFunction={removeHistoryExerciseFunction}
+            editSetWeightFunction={({ exerciseId, setId, weight }) =>
+              dispatch(
+                editSetWeightHistory({
+                  exerciseId,
+                  setId,
+                  weight,
+                })
+              )
+            }
+            editSetRepsFunction={({ exerciseId, setId, reps }) =>
+              dispatch(
+                editSetRepsHistory({
+                  exerciseId,
+                  setId,
+                  reps,
+                })
+              )
+            }
+            addSetFunction={(exerciseId) => dispatch(addSetHistory(exerciseId))}
+            removeSetFunction={({ exerciseId, setId }) =>
+              dispatch(removeSetHistory({ exerciseId, setId }))
+            }
+            removeExerciseFunction={(id) =>
+              dispatch(removeExerciseHistory({ id }))
+            }
+            cancelFunction={() => {
+              dispatch(setIsEditing(false));
+              onClose();
+            }}
+            showPickExerciseModalFunction={() =>
+              dispatch(setPickExerciseHistoryModalVisible(true))
+            }
           />
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            style={styles.addExerciseButton}
-          >
-            <Text style={styles.addExerciseText}>Add an Exercise</Text>
-          </Pressable>
         </View>
         <PickExerciseModal
-          open={modalVisible}
-          onClose={() => setModalVisible(false)}
-          addActiveExerciseFunction={addHistoryExerciseFunction}
+          open={pickExerciseModalVisible}
+          onClose={() => setPickExerciseHistoryModalVisible(false)}
+          addExerciseFunction={({ name }) =>
+            dispatch(addExerciseHistory({ name }))
+          }
         />
       </View>
     </Modal>
@@ -198,7 +148,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     backgroundColor: "white",
     borderRadius: 10,
-    height: "60%",
+    height: "70%",
     marginBottom: 80,
     alignContent: "center",
     justifyContent: "center",

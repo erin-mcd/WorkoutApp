@@ -5,14 +5,10 @@ import ExerciseList from "./ExerciseList";
 interface Props {
   open: boolean;
   onClose: () => void;
-  addActiveExerciseFunction: ({ name }: { name: string }) => void;
+  addExerciseFunction: ({ name }: { name: string }) => void;
 }
 
-function PickExerciseModal({
-  open,
-  onClose,
-  addActiveExerciseFunction,
-}: Props) {
+function PickExerciseModal({ open, onClose, addExerciseFunction }: Props) {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
@@ -22,7 +18,7 @@ function PickExerciseModal({
               isActiveWorkout={true}
               isHistoryEdit={true}
               onTap={() => onClose()}
-              addActiveExerciseFunction={addActiveExerciseFunction}
+              addExerciseFunction={addExerciseFunction}
             />
           </View>
         </View>
