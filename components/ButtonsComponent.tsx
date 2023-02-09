@@ -1,18 +1,20 @@
-import React from "react";
-import { View, Pressable, Text, StyleSheet } from "react-native";
-import { useDispatch } from "react-redux";
+import React from 'react'
+import { View, Pressable, Text, StyleSheet } from 'react-native'
 interface Props {
-  cancelEditFunction: () => void;
-  showPickExerciseModalFunction: () => void;
+  cancelEditFunction: () => void
+  showPickExerciseModalFunction: () => void
 }
+
 function ButtonsComponent({
   cancelEditFunction,
   showPickExerciseModalFunction,
-}: Props) {
+}: Props): JSX.Element {
   return (
     <View>
       <Pressable
-        onPress={() => showPickExerciseModalFunction()}
+        onPress={() => {
+          showPickExerciseModalFunction()
+        }}
         style={({ pressed }) => [
           styles.addExerciseButton,
           pressed ? styles.buttonPressed : null,
@@ -21,7 +23,9 @@ function ButtonsComponent({
         <Text style={styles.addExerciseText}>Add an Exercise</Text>
       </Pressable>
       <Pressable
-        onPress={() => cancelEditFunction()}
+        onPress={() => {
+          cancelEditFunction()
+        }}
         style={({ pressed }) => [
           styles.cancelWorkoutButton,
           pressed ? styles.buttonPressed : null,
@@ -30,10 +34,10 @@ function ButtonsComponent({
         <Text style={styles.cancelWorkoutText}>Cancel Workout</Text>
       </Pressable>
     </View>
-  );
+  )
 }
 
-export default ButtonsComponent;
+export default ButtonsComponent
 
 const styles = StyleSheet.create({
   buttonPressed: {
@@ -41,22 +45,22 @@ const styles = StyleSheet.create({
   },
 
   addExerciseButton: {
-    backgroundColor: "gray",
+    backgroundColor: 'gray',
     padding: 10,
     width: 350,
     borderRadius: 8,
   },
   addExerciseText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   cancelWorkoutButton: {
-    backgroundColor: "#ff7885",
+    backgroundColor: '#ff7885',
     padding: 10,
     width: 350,
     borderRadius: 8,
     marginTop: 10,
   },
   cancelWorkoutText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})

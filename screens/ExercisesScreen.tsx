@@ -1,14 +1,11 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useLayoutEffect } from "react";
-import { Pressable } from "react-native";
-import CreateExerciseTypeModal from "../components/CreateExerciseTypeModal";
-import { useState } from "react";
-import ExerciseList from "../components/ExerciseList";
+import React, { useState, useLayoutEffect } from 'react'
+import { StyleSheet, View, Pressable } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import CreateExerciseTypeModal from '../components/CreateExerciseTypeModal'
+import ExerciseList from '../components/ExerciseList'
 
-function Exercises({ navigation }: any) {
-  const [modalVisible, setModalVisible] = useState(false);
+function Exercises({ navigation }: any): JSX.Element {
+  const [modalVisible, setModalVisible] = useState(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,35 +13,41 @@ function Exercises({ navigation }: any) {
         return (
           <View>
             <Pressable
-              onPress={() => setModalVisible(true)}
+              onPress={() => {
+                setModalVisible(true)
+              }}
               style={({ pressed }) => pressed && styles.pressed}
             >
-              <Ionicons name={"add"} size={24} color={"black"} />
+              <Ionicons name={'add'} size={24} color={'black'} />
             </Pressable>
           </View>
-        );
+        )
       },
-    });
-  }, [navigation]);
+    })
+  }, [navigation])
 
   return (
     <>
       <View style={styles.exerciseList}>
         <ExerciseList
-          onTap={() => console.log("hi")}
+          onTap={() => {
+            console.log('hi')
+          }}
           isActiveWorkout={false}
           isHistoryEdit={false}
         />
       </View>
       <CreateExerciseTypeModal
         open={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={() => {
+          setModalVisible(false)
+        }}
       />
     </>
-  );
+  )
 }
 
-export default Exercises;
+export default Exercises
 const styles = StyleSheet.create({
   pressed: {
     opacity: 0.7,
@@ -52,6 +55,6 @@ const styles = StyleSheet.create({
   exerciseList: {
     flex: 1,
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
-});
+})

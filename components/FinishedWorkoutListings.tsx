@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from 'react'
 import {
   View,
   StyleSheet,
@@ -6,74 +6,77 @@ import {
   FlatList,
   Button,
   Pressable,
-} from "react-native";
-import { Exercise } from "../models/Exercise";
-import { dropWorkoutTable } from "../db-service";
-import EditWorkoutHistoryModal from "./EditWorkoutHistoryModal";
-import { useDispatch, useSelector } from "react-redux";
-import { setHistoryValues, setIsEditing } from "../reduxThings/editHistory";
-import { ExerciseSet } from "../models/ExerciseSet";
-import { RootState } from "../reduxThings/store";
+} from 'react-native'
+import { type Exercise } from '../models/Exercise'
+import { dropWorkoutTable } from '../db-service'
+import EditWorkoutHistoryModal from './EditWorkoutHistoryModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { setHistoryValues, setIsEditing } from '../reduxThings/editHistory'
+import { type ExerciseSet } from '../models/ExerciseSet'
+import { type RootState } from '../reduxThings/store'
 
-function FinishedWorkoutListings(workouts: any) {
-  const dispatch = useDispatch();
+function FinishedWorkoutListings(workouts: any): JSX.Element {
+  const dispatch = useDispatch()
   const editModalVisible: boolean = useSelector(
     (state: RootState) => state.editHistory.isEditing
-  );
+  )
 
-  function findBestSet(sets: ExerciseSet[]) {
+  function findBestSet(sets: ExerciseSet[]): { weight: number; reps: number } {
     const maxWeight = Math.max.apply(
       Math,
       sets.map(function (set) {
         if (set.weight === null) {
-          return -1;
+          return -1
         }
-        return set.weight;
-      })
-    );
 
-    const setsWithMaxWeight = sets.filter((set) => set.weight === maxWeight);
+        return set.weight
+      })
+    )
+
+    const setsWithMaxWeight = sets.filter((set) => set.weight === maxWeight)
 
     const maxReps = Math.max.apply(
       Math,
       setsWithMaxWeight.map(function (set) {
         if (set.reps === null) {
-          return -1;
+          return -1
         }
-        return set.reps;
-      })
-    );
 
-    return { weight: maxWeight, reps: maxReps };
+        return set.reps
+      })
+    )
+
+    return { weight: maxWeight, reps: maxReps }
   }
 
-  function renderExercise(itemData: any) {
-    const exercise: Exercise = itemData.item;
-    const bestSet = findBestSet(exercise.sets);
+  function renderExercise(itemData: any): JSX.Element {
+    const exercise: Exercise = itemData.item
+    const bestSet = findBestSet(exercise.sets)
 
     return (
       <View style={styles.exerciseContainer}>
-        <Text style={styles.exerciseName}>{exercise.sets.length + " x "}</Text>
+        <Text style={styles.exerciseName}>
+          {JSON.stringify(exercise.sets.length) + ' x '}
+        </Text>
         <Text style={styles.exerciseName}>{itemData.item.name}</Text>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{bestSet.weight}</Text>
           <Text style={styles.detailsText}>{bestSet.reps}</Text>
         </View>
       </View>
-    );
+    )
   }
 
-  function renderWorkoutListing(itemData: any) {
-    const workoutObject: Exercise[] = JSON.parse(itemData.item.jsonObject);
-    const workoutId = JSON.parse(itemData.item.id);
+  function renderWorkoutListing(itemData: any): JSX.Element {
+    const workoutObject: Exercise[] = JSON.parse(itemData.item.jsonObject)
+    const workoutId = JSON.parse(itemData.item.id)
+
     return (
       <View style={styles.workoutContainer}>
         <Pressable
           onPress={() => {
-            dispatch(
-              setHistoryValues({ workoutObject: workoutObject, id: workoutId })
-            );
-            dispatch(setIsEditing(true));
+            dispatch(setHistoryValues({ workoutObject, id: workoutId }))
+            dispatch(setIsEditing(true))
           }}
         >
           <Text style={styles.dateText}>{itemData.item.date}</Text>
@@ -92,7 +95,7 @@ function FinishedWorkoutListings(workouts: any) {
           onClose={() => dispatch(setIsEditing(false))}
         />
       </View>
-    );
+    )
   }
 
   return (
@@ -102,42 +105,47 @@ function FinishedWorkoutListings(workouts: any) {
         keyExtractor={(item) => item.id}
         renderItem={renderWorkoutListing}
       />
-      <Button title="clear" onPress={() => dropWorkoutTable()} />
+      <Button
+        title="clear"
+        onPress={() => {
+          dropWorkoutTable()
+        }}
+      />
     </View>
-  );
+  )
 }
 
-export default FinishedWorkoutListings;
+export default FinishedWorkoutListings
 
 const styles = StyleSheet.create({
   workoutContainer: {
-    justifyContent: "center",
-    borderColor: "gray",
+    justifyContent: 'center',
+    borderColor: 'gray',
     borderWidth: 2,
     width: 400,
     borderRadius: 8,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     marginVertical: 6,
   },
   detailsContainer: {
     marginHorizontal: 10,
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   detailsText: {
     marginHorizontal: 10,
     fontSize: 16,
   },
   exerciseContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginHorizontal: 10,
     marginBottom: 10,
   },
   dateText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
-    color: "gray",
+    color: 'gray',
     marginVertical: 10,
     marginLeft: 10,
   },
@@ -146,18 +154,18 @@ const styles = StyleSheet.create({
   },
   exerciseText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   bestSetText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginRight: 20,
   },
   headerContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginHorizontal: 10,
     marginBottom: 10,
   },
-});
+})

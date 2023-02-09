@@ -1,29 +1,32 @@
-import React from "react";
-import { Button, StyleSheet } from "react-native";
-import CurrentWorkoutDrawer from "../components/CurrentWorkoutDrawer";
-import { startWorkout } from "../reduxThings/activeExercises";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootState } from "../reduxThings/store";
+import React from 'react'
+import { Button } from 'react-native'
+import CurrentWorkoutDrawer from '../components/CurrentWorkoutDrawer'
+import { startWorkout } from '../reduxThings/activeExercises'
+import { useDispatch, useSelector } from 'react-redux'
 
-function StartWorkoutScreen(props) {
-  const dispatch = useDispatch();
+import { type RootState } from '../reduxThings/store'
+
+function StartWorkoutScreen(): JSX.Element {
+  const dispatch = useDispatch()
   const currentWorkoutState = useSelector(
     (state: RootState) => state.activeExercises.activeWorkout
-  );
+  )
 
-  function startWorkoutHandler() {
-    dispatch(startWorkout());
+  function startWorkoutHandler(): void {
+    dispatch(startWorkout())
   }
 
   return (
     <>
-      <Button title="Start Workout" onPress={() => startWorkoutHandler()} />
+      <Button
+        title="Start Workout"
+        onPress={() => {
+          startWorkoutHandler()
+        }}
+      />
       {currentWorkoutState ? <CurrentWorkoutDrawer /> : null}
     </>
-  );
+  )
 }
 
-export default StartWorkoutScreen;
-
-const styles = StyleSheet.create({});
+export default StartWorkoutScreen

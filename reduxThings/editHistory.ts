@@ -1,17 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Exercise } from "../models/Exercise";
-import {
-  addSetToExerciseStatTable,
-  addWorkout,
-  editWorkoutHistory,
-} from "../db-service";
-import { createExerciseStatTable } from "../db-service";
+import { createSlice } from '@reduxjs/toolkit'
+import { type Exercise } from '../models/Exercise'
+import { editWorkoutHistory } from '../db-service'
 
-const init: Exercise[] = [];
-const initId: number = -1;
+const init: Exercise[] = []
+const initId: number = -1
 
 const editHistorySlices = createSlice({
-  name: "editHistory",
+  name: 'editHistory',
   initialState: {
     historyExercises: init,
     id: initId,
@@ -20,64 +15,64 @@ const editHistorySlices = createSlice({
   },
   reducers: {
     setHistoryValues: (state, action) => {
-      state.historyExercises = action.payload.workoutObject;
-      state.id = action.payload.id;
+      state.historyExercises = action.payload.workoutObject
+      state.id = action.payload.id
     },
     addSetHistory: (state, action) => {
       const index = state.historyExercises.findIndex((object) => {
-        return object.id === action.payload;
-      });
+        return object.id === action.payload
+      })
 
       const newSet = {
         weight: null,
         reps: null,
         id: state.historyExercises[index].sets.length + 1,
-      };
-      state.historyExercises[index].sets.push(newSet);
+      }
+      state.historyExercises[index].sets.push(newSet)
     },
     removeSetHistory: (state, action) => {
-      const exerciseId = action.payload.exerciseId;
-      const setId = action.payload.setId;
+      const exerciseId = action.payload.exerciseId
+      const setId = action.payload.setId
       const index = state.historyExercises.findIndex((object) => {
-        return object.id === exerciseId;
-      });
+        return object.id === exerciseId
+      })
 
       state.historyExercises[index].sets.splice(
         state.historyExercises[index].sets.findIndex((object) => {
-          return object.id === setId;
+          return object.id === setId
         }),
         1
-      );
+      )
     },
     editSetWeightHistory: (state, action) => {
-      const exerciseId = action.payload.exerciseId;
-      const setId = action.payload.setId;
+      const exerciseId = action.payload.exerciseId
+      const setId = action.payload.setId
       const index = state.historyExercises.findIndex((object) => {
-        return object.id === exerciseId;
-      });
+        return object.id === exerciseId
+      })
       const setIndex = state.historyExercises[index].sets.findIndex(
         (object) => {
-          return object.id === setId;
+          return object.id === setId
         }
-      );
+      )
 
       state.historyExercises[index].sets[setIndex].weight =
-        action.payload.weight;
+        action.payload.weight
     },
     editSetRepsHistory: (state, action) => {
-      const exerciseId = action.payload.exerciseId;
-      const setId = action.payload.setId;
+      const exerciseId = action.payload.exerciseId
+      const setId = action.payload.setId
       const index = state.historyExercises.findIndex((object) => {
-        return object.id === exerciseId;
-      });
+        return object.id === exerciseId
+      })
 
       const setIndex = state.historyExercises[index].sets.findIndex(
         (object) => {
-          return object.id === setId;
+          return object.id === setId
         }
-      );
+      )
 
-      state.historyExercises[index].sets[setIndex].reps = action.payload.reps;
+      state.historyExercises[index].sets[setIndex].reps = action.payload.reps
     },
     addExerciseHistory: (state, action) => {
       const newExercise = {
@@ -90,47 +85,47 @@ const editHistorySlices = createSlice({
             id: 1,
           },
         ],
-      };
-      state.historyExercises.push(newExercise);
-      state.pickExerciseModalVisible = false;
+      }
+      state.historyExercises.push(newExercise)
+      state.pickExerciseModalVisible = false
     },
     removeExerciseHistory: (state, action) => {
       state.historyExercises.splice(
         state.historyExercises.findIndex((object) => {
-          return object.id === action.payload.id;
+          return object.id === action.payload.id
         }),
         1
-      );
+      )
     },
     resetHistory: (state) => {
-      state.historyExercises = [];
+      state.historyExercises = []
     },
 
     endHistoryEdit: (state) => {
-      const newJsonObject = JSON.stringify(state.historyExercises);
-      editWorkoutHistory(newJsonObject, state.id);
+      const newJsonObject = JSON.stringify(state.historyExercises)
+      editWorkoutHistory(newJsonObject, state.id)
     },
     setIsEditing: (state, action) => {
-      state.isEditing = action.payload;
+      state.isEditing = action.payload
     },
     setPickExerciseHistoryModalVisible: (state, action) => {
-      state.pickExerciseModalVisible = action.payload;
+      state.pickExerciseModalVisible = action.payload
     },
   },
-});
+})
 
-export const addSetHistory = editHistorySlices.actions.addSetHistory;
-export const addExerciseHistory = editHistorySlices.actions.addExerciseHistory;
-export const removeSetHistory = editHistorySlices.actions.removeSetHistory;
+export const addSetHistory = editHistorySlices.actions.addSetHistory
+export const addExerciseHistory = editHistorySlices.actions.addExerciseHistory
+export const removeSetHistory = editHistorySlices.actions.removeSetHistory
 export const removeExerciseHistory =
-  editHistorySlices.actions.removeExerciseHistory;
+  editHistorySlices.actions.removeExerciseHistory
 export const editSetWeightHistory =
-  editHistorySlices.actions.editSetWeightHistory;
-export const editSetRepsHistory = editHistorySlices.actions.editSetRepsHistory;
-export const resetHistory = editHistorySlices.actions.resetHistory;
-export const endHistoryEdit = editHistorySlices.actions.endHistoryEdit;
-export const setHistoryValues = editHistorySlices.actions.setHistoryValues;
-export const setIsEditing = editHistorySlices.actions.setIsEditing;
+  editHistorySlices.actions.editSetWeightHistory
+export const editSetRepsHistory = editHistorySlices.actions.editSetRepsHistory
+export const resetHistory = editHistorySlices.actions.resetHistory
+export const endHistoryEdit = editHistorySlices.actions.endHistoryEdit
+export const setHistoryValues = editHistorySlices.actions.setHistoryValues
+export const setIsEditing = editHistorySlices.actions.setIsEditing
 export const setPickExerciseHistoryModalVisible =
-  editHistorySlices.actions.setPickExerciseHistoryModalVisible;
-export default editHistorySlices.reducer;
+  editHistorySlices.actions.setPickExerciseHistoryModalVisible
+export default editHistorySlices.reducer
