@@ -1,34 +1,32 @@
-import React from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
-// @ts-ignore
-import BottomDrawer from "react-native-bottom-drawer-view";
+import React from 'react'
+import { StyleSheet, View, Text, Pressable } from 'react-native'
+// @ts-expect-error not available for component
+import BottomDrawer from 'react-native-bottom-drawer-view'
 import {
   addActiveExercise,
   endWorkout,
   setPickExerciseModalVisible,
-} from "../reduxThings/activeExercises";
-import { useDispatch, useSelector } from "react-redux";
-import PickExerciseModal from "./PickExerciseModal";
-import ExerciseDrawerForm from "./ExerciseDrawerForm";
-import { Exercise } from "../models/Exercise";
-import { RootState } from "../reduxThings/store";
-import {
   removeActiveExercise,
   addSet,
   removeSet,
   editSetReps,
   editSetWeight,
   cancelWorkout,
-} from "../reduxThings/activeExercises";
+} from '../reduxThings/activeExercises'
+import { useDispatch, useSelector } from 'react-redux'
+import PickExerciseModal from './PickExerciseModal'
+import ExerciseDrawerForm from './ExerciseDrawerForm'
+import { type Exercise } from '../models/Exercise'
+import { type RootState } from '../reduxThings/store'
 
-function CurrentWorkoutDrawer() {
-  const dispatch = useDispatch();
+function CurrentWorkoutDrawer(): JSX.Element {
+  const dispatch = useDispatch()
   const activeExercises: Exercise[] = useSelector(
     (state: RootState) => state.activeExercises.activeExercises
-  );
+  )
   const pickExerciseModalVisible: boolean = useSelector(
     (state: RootState) => state.activeExercises.pickExerciseModalVisible
-  );
+  )
 
   return (
     <>
@@ -82,27 +80,27 @@ function CurrentWorkoutDrawer() {
         }
       />
     </>
-  );
+  )
 }
 
-export default CurrentWorkoutDrawer;
+export default CurrentWorkoutDrawer
 
 const styles = StyleSheet.create({
   finishButton: {
     padding: 10,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   finishButtonText: {
-    textAlign: "right",
-    color: "green",
+    textAlign: 'right',
+    color: 'green',
     fontSize: 20,
   },
 
   drawer: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttonPressed: {
     opacity: 0.5,
   },
-});
+})

@@ -1,20 +1,20 @@
-import { ExerciseType } from "../models/ExerciseType";
+import { type ExerciseType } from '../models/ExerciseType'
 
 export const exerciseTypes: ExerciseType[] = [
   {
-    name: "Overhead Press",
+    name: 'Overhead Press',
     id: 1,
   },
   {
-    name: "Bicep Curl",
+    name: 'Bicep Curl',
     id: 2,
   },
   {
-    name: "Leg Press",
+    name: 'Leg Press',
     id: 3,
   },
   {
-    name: "Squat",
+    name: 'Squat',
     id: 4,
   },
-];
+]

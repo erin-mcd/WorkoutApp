@@ -1,8 +1,8 @@
-import React from "react";
-import { Text, StyleSheet, View, Pressable, Modal, Button } from "react-native";
-import ExerciseDrawerForm from "./ExerciseDrawerForm";
-import { Exercise } from "../models/Exercise";
-import PickExerciseModal from "./PickExerciseModal";
+import React from 'react'
+import { Text, StyleSheet, View, Pressable, Modal } from 'react-native'
+import ExerciseDrawerForm from './ExerciseDrawerForm'
+import { type Exercise } from '../models/Exercise'
+import PickExerciseModal from './PickExerciseModal'
 import {
   addExerciseHistory,
   addSetHistory,
@@ -12,24 +12,24 @@ import {
   removeExerciseHistory,
   removeSetHistory,
   setIsEditing,
-} from "../reduxThings/editHistory";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../reduxThings/store";
-import { setPickExerciseHistoryModalVisible } from "../reduxThings/editHistory";
+  setPickExerciseHistoryModalVisible,
+} from '../reduxThings/editHistory'
+import { useDispatch, useSelector } from 'react-redux'
+import { type RootState } from '../reduxThings/store'
 
 interface Props {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
-function EditWorkoutHistoryModal({ open, onClose }: Props) {
+function EditWorkoutHistoryModal({ open, onClose }: Props): JSX.Element {
   const workoutHistory: Exercise[] = useSelector(
     (state: RootState) => state.editHistory.historyExercises
-  );
+  )
   const pickExerciseModalVisible: boolean = useSelector(
     (state: RootState) => state.editHistory.pickExerciseModalVisible
-  );
-  const dispatch = useDispatch();
+  )
+  const dispatch = useDispatch()
 
   return (
     <Modal animationType="slide" transparent={true} visible={open}>
@@ -38,8 +38,8 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
           <Pressable
             style={styles.finishButton}
             onPress={() => {
-              dispatch(endHistoryEdit());
-              onClose();
+              dispatch(endHistoryEdit())
+              onClose()
             }}
           >
             <Text style={styles.finishButtonText}>Finish</Text>
@@ -72,8 +72,8 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
               dispatch(removeExerciseHistory({ id }))
             }
             cancelFunction={() => {
-              dispatch(setIsEditing(false));
-              onClose();
+              dispatch(setIsEditing(false))
+              onClose()
             }}
             showPickExerciseModalFunction={() =>
               dispatch(setPickExerciseHistoryModalVisible(true))
@@ -89,45 +89,45 @@ function EditWorkoutHistoryModal({ open, onClose }: Props) {
         />
       </View>
     </Modal>
-  );
+  )
 }
 
-export default EditWorkoutHistoryModal;
+export default EditWorkoutHistoryModal
 
 const styles = StyleSheet.create({
   contentContainer: {
     marginTop: 50,
     padding: 20,
-    alignContent: "center",
-    justifyContent: "center",
-    backgroundColor: "#00000080",
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000080',
     flex: 1,
   },
   textInput: {
     height: 50,
     width: 200,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     margin: 8,
-    textAlign: "center",
+    textAlign: 'center',
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
   },
   inputsContainer: {
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingBottom: 50,
   },
   buttonsContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     margin: 16,
     borderRadius: 8,
-    overflow: "hidden",
-    flexDirection: "row",
-    justifyContent: "center",
+    overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 18,
     margin: 8,
   },
@@ -135,48 +135,48 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   cancelButton: {
-    backgroundColor: "#f194ff",
+    backgroundColor: '#f194ff',
     borderRadius: 10,
   },
   cancelButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 18,
     margin: 8,
   },
   innerContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
-    height: "70%",
+    height: '70%',
     marginBottom: 80,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   modelContentsContainer: {
     marginTop: 50,
     padding: 20,
-    alignContent: "center",
-    justifyContent: "center",
-    backgroundColor: "#00000080",
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000080',
     flex: 1,
   },
   addExerciseButton: {
-    backgroundColor: "gray",
+    backgroundColor: 'gray',
     padding: 10,
-    width: "80%",
+    width: '80%',
     borderRadius: 8,
   },
   addExerciseText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   finishButton: {
     padding: 10,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   finishButtonText: {
-    textAlign: "right",
-    color: "green",
+    textAlign: 'right',
+    color: 'green',
     fontSize: 20,
   },
-});
+})

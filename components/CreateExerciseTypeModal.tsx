@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -7,49 +7,51 @@ import {
   Pressable,
   Modal,
   Alert,
-} from "react-native";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addExerciseType } from "../reduxThings/exerciseTypes";
+} from 'react-native'
+
+import { useDispatch } from 'react-redux'
+import { addExerciseType } from '../reduxThings/exerciseTypes'
 
 interface Props {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
-function CreateExerciseTypeModal({ open, onClose }: Props) {
-  const dispatch = useDispatch();
-  const [name, setName] = useState("");
+function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
+  const dispatch = useDispatch()
+  const [name, setName] = useState('')
 
-  function nameInputHandler(enteredName: string) {
-    setName(enteredName);
-  }
-  function getId() {
-    const id = Math.random();
-    return id;
+  function nameInputHandler(enteredName: string): void {
+    setName(enteredName)
   }
 
-  function validateInputs(name: string) {
-    const validationErrors: string[] = [];
+  function getId(): number {
+    const id = Math.random()
 
-    const nameIsValid = name.length > 0 && name.length < 20;
+    return id
+  }
+
+  function validateInputs(name: string): string[] {
+    const validationErrors: string[] = []
+
+    const nameIsValid = name.length > 0 && name.length < 20
 
     if (!nameIsValid) {
-      validationErrors.push("Name is Invalid");
+      validationErrors.push('Name is Invalid')
     }
 
-    return validationErrors;
+    return validationErrors
   }
 
-  function confirmHandler() {
-    const errors = validateInputs(name);
+  function confirmHandler(): void {
+    const errors = validateInputs(name)
     if (errors.length > 0) {
-      Alert.alert(JSON.stringify(errors));
+      Alert.alert(JSON.stringify(errors))
     } else {
-      dispatch(addExerciseType({ name, id: getId() }));
+      dispatch(addExerciseType({ name, id: getId() }))
     }
 
-    onClose();
+    onClose()
   }
 
   return (
@@ -64,7 +66,12 @@ function CreateExerciseTypeModal({ open, onClose }: Props) {
             />
           </View>
           <View style={styles.buttonsContainer}>
-            <Pressable onPress={() => onClose()} style={styles.cancelButton}>
+            <Pressable
+              onPress={() => {
+                onClose()
+              }}
+              style={styles.cancelButton}
+            >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </Pressable>
             <Pressable
@@ -77,45 +84,45 @@ function CreateExerciseTypeModal({ open, onClose }: Props) {
         </View>
       </View>
     </Modal>
-  );
+  )
 }
 
-export default CreateExerciseTypeModal;
+export default CreateExerciseTypeModal
 
 const styles = StyleSheet.create({
   contentContainer: {
     marginTop: 50,
     padding: 20,
-    alignContent: "center",
-    justifyContent: "center",
-    backgroundColor: "#00000080",
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000080',
     flex: 1,
   },
   textInput: {
     height: 50,
     width: 200,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     margin: 8,
-    textAlign: "center",
+    textAlign: 'center',
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
   },
   inputsContainer: {
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingBottom: 50,
   },
   buttonsContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     margin: 16,
     borderRadius: 8,
-    overflow: "hidden",
-    flexDirection: "row",
-    justifyContent: "center",
+    overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 18,
     margin: 8,
   },
@@ -123,22 +130,22 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   cancelButton: {
-    backgroundColor: "#f194ff",
+    backgroundColor: '#f194ff',
     borderRadius: 10,
   },
   cancelButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 18,
     margin: 8,
   },
   innerContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
-    height: "60%",
+    height: '60%',
     marginBottom: 80,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
   },
-});
+})

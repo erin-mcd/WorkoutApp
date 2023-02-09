@@ -1,22 +1,21 @@
-import { StyleSheet } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { Provider } from "react-redux";
-import { store } from "./reduxThings/store";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import HistoryScreen from "./screens/HistoryScreen";
-import StatsScreen from "./screens/StatsScreen";
-import StartWorkoutScreen from "./screens/StartWorkoutScreen";
-import ExercisesScreen from "./screens/ExercisesScreen";
-import { createWorkoutObjectTable } from "./db-service";
-import SettingsScreen from "./screens/Settings";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native'
+import { Provider } from 'react-redux'
+import { store } from './reduxThings/store'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import HistoryScreen from './screens/HistoryScreen'
+import StatsScreen from './screens/StatsScreen'
+import StartWorkoutScreen from './screens/StartWorkoutScreen'
+import ExercisesScreen from './screens/ExercisesScreen'
+import { createWorkoutObjectTable } from './db-service'
+import SettingsScreen from './screens/Settings'
 
-createWorkoutObjectTable();
-const BottomTabs = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+createWorkoutObjectTable()
+const BottomTabs = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
-function BottomTab() {
+function BottomTab(): JSX.Element {
   return (
     <BottomTabs.Navigator>
       <BottomTabs.Screen name="Stats" component={StatsScreen} />
@@ -25,10 +24,10 @@ function BottomTab() {
       <BottomTabs.Screen name="Exercises" component={ExercisesScreen} />
       <BottomTabs.Screen name="Settings" component={SettingsScreen} />
     </BottomTabs.Navigator>
-  );
+  )
 }
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <>
       <Provider store={store}>
@@ -39,14 +38,5 @@ export default function App() {
         </NavigationContainer>
       </Provider>
     </>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

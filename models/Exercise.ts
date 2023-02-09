@@ -1,7 +1,7 @@
-import { ExerciseSet } from "./ExerciseSet";
+import { type ExerciseSet } from './ExerciseSet'
 
 export class Exercise {
-  name!: string;
-  sets!: ExerciseSet[];
-  id!: number;
+  name!: string
+  sets!: ExerciseSet[]
+  id!: number
 }

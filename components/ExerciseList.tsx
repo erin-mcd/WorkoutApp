@@ -1,11 +1,11 @@
-import React from "react";
-import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
-import { useSelector } from "react-redux";
+import React from 'react'
+import { Text, View, FlatList, StyleSheet, Pressable } from 'react-native'
+import { useSelector } from 'react-redux'
 interface Props {
-  onTap: () => void;
-  isActiveWorkout: boolean;
-  isHistoryEdit: boolean;
-  addExerciseFunction?: ({ name }: { name: string }) => void;
+  onTap: () => void
+  isActiveWorkout: boolean
+  isHistoryEdit: boolean
+  addExerciseFunction?: ({ name }: { name: string }) => void
 }
 
 function ExerciseList({
@@ -13,35 +13,37 @@ function ExerciseList({
   isActiveWorkout = false,
   isHistoryEdit = false,
   addExerciseFunction,
-}: Props) {
-  function tapHandler(name: string) {
+}: Props): JSX.Element {
+  function tapHandler(name: string): void {
     if (
       (isActiveWorkout || isHistoryEdit) &&
       addExerciseFunction !== undefined
     ) {
-      addExerciseFunction({ name: name });
+      addExerciseFunction({ name })
     }
-    onTap();
+    onTap()
   }
 
   const exerciseTypesList = useSelector(
     (state: any) => state.exerciseTypesList.exerciseTypes
-  );
+  )
 
-  function renderExerciseType(itemData: any) {
+  function renderExerciseType(itemData: any): JSX.Element {
     const exerciseItemProps = {
       name: itemData.item.name,
       id: itemData.item.id,
-    };
+    }
 
     return (
       <Pressable
-        onPress={() => tapHandler(exerciseItemProps.name)}
+        onPress={() => {
+          tapHandler(exerciseItemProps.name)
+        }}
         style={styles.exerciseListItem}
       >
         <Text>{exerciseItemProps.name}</Text>
       </Pressable>
-    );
+    )
   }
 
   return (
@@ -52,16 +54,16 @@ function ExerciseList({
         renderItem={renderExerciseType}
       />
     </View>
-  );
+  )
 }
 
-export default ExerciseList;
+export default ExerciseList
 
 const styles = StyleSheet.create({
   exerciseListItem: {
-    borderBottomColor: "gray",
+    borderBottomColor: 'gray',
     borderBottomWidth: 1,
     padding: 10,
     margin: 4,
   },
-});
+})

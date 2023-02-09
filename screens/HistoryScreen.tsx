@@ -1,28 +1,29 @@
-import React from "react";
-import { Text, StyleSheet, View } from "react-native";
-import * as SQLite from "expo-sqlite";
-import { useState } from "react";
-import FinishedWorkoutListings from "../components/FinishedWorkoutListings";
-import { SQLError, SQLResultSet, SQLTransaction } from "expo-sqlite";
-const db = SQLite.openDatabase("db.workoutDB");
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import * as SQLite from 'expo-sqlite'
 
-const init: any[] = [];
+import FinishedWorkoutListings from '../components/FinishedWorkoutListings'
+import { type SQLResultSet, type SQLTransaction } from 'expo-sqlite'
+const db = SQLite.openDatabase('db.workoutDB')
 
-function HistoryScreen() {
-  const [workoutTable, setWorkoutTable] = useState(init);
-  function setWorkoutCallback(txObj: any, resultSet: SQLResultSet) {
-    setWorkoutTable(resultSet.rows._array);
+const init: any[] = []
+
+function HistoryScreen(): JSX.Element {
+  const [workoutTable, setWorkoutTable] = useState(init)
+
+  function setWorkoutCallback(txObj: any, resultSet: SQLResultSet): void {
+    setWorkoutTable(resultSet.rows._array)
   }
 
-  const setWorkoutTableFromDB = (db: SQLite.WebSQLDatabase) => {
+  const setWorkoutTableFromDB = (db: SQLite.WebSQLDatabase): void => {
     db.transaction((tx: SQLTransaction) => {
-      tx.executeSql("SELECT * FROM workoutObjects", [], (txObj, resultSet) =>
+      tx.executeSql('SELECT * FROM workoutObjects', [], (txObj, resultSet) => {
         setWorkoutCallback(txObj, resultSet)
-      );
-    });
-  };
+      })
+    })
+  }
 
-  setWorkoutTableFromDB(db);
+  setWorkoutTableFromDB(db)
 
   return (
     <>
@@ -32,13 +33,13 @@ function HistoryScreen() {
         </View>
       ) : null}
     </>
-  );
+  )
 }
 
-export default HistoryScreen;
+export default HistoryScreen
 
 const styles = StyleSheet.create({
   workoutListings: {
-    alignItems: "center",
+    alignItems: 'center',
   },
-});
+})

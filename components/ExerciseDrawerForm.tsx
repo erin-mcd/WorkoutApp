@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Animated,
   FlatList,
@@ -6,48 +6,49 @@ import {
   StyleSheet,
   Text,
   View,
-} from "react-native";
-import { TextInput } from "react-native";
-import { Exercise } from "../models/Exercise";
-import { ExerciseSet } from "../models/ExerciseSet";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import ButtonsComponent from "./ButtonsComponent";
+  TextInput,
+} from 'react-native'
+
+import { type Exercise } from '../models/Exercise'
+import { type ExerciseSet } from '../models/ExerciseSet'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import ButtonsComponent from './ButtonsComponent'
 interface Props {
-  itemData: any;
-  exerciseId: number;
+  itemData: any
+  exerciseId: number
 }
 
 interface formProps {
-  exercises: Exercise[];
-  removeExerciseFunction: ({ id }: { id: number }) => void;
+  exercises: Exercise[]
+  removeExerciseFunction: ({ id }: { id: number }) => void
   editSetRepsFunction: ({
     exerciseId,
     setId,
     reps,
   }: {
-    exerciseId: number;
-    setId: number;
-    reps: number;
-  }) => void;
+    exerciseId: number
+    setId: number
+    reps: number
+  }) => void
   removeSetFunction: ({
     exerciseId,
     setId,
   }: {
-    exerciseId: number;
-    setId: number;
-  }) => void;
+    exerciseId: number
+    setId: number
+  }) => void
   editSetWeightFunction: ({
     exerciseId,
     setId,
     weight,
   }: {
-    exerciseId: number;
-    setId: number;
-    weight: number;
-  }) => void;
-  addSetFunction: (id: number) => void;
-  cancelFunction: () => void;
-  showPickExerciseModalFunction: () => void;
+    exerciseId: number
+    setId: number
+    weight: number
+  }) => void
+  addSetFunction: (id: number) => void
+  cancelFunction: () => void
+  showPickExerciseModalFunction: () => void
 }
 
 function ExerciseDrawerForm({
@@ -59,22 +60,22 @@ function ExerciseDrawerForm({
   addSetFunction,
   cancelFunction,
   showPickExerciseModalFunction,
-}: formProps) {
-  function renderSet({ itemData, exerciseId }: Props) {
-    const set: ExerciseSet = itemData.item;
+}: formProps): JSX.Element {
+  function renderSet({ itemData, exerciseId }: Props): JSX.Element {
+    const set: ExerciseSet = itemData.item
     const rightAction = (
       progressAnimatedValue: any,
       dragX: {
         interpolate: (arg0: {
-          inputRange: number[];
-          outputRange: number[];
-        }) => any;
+          inputRange: number[]
+          outputRange: number[]
+        }) => any
       }
-    ) => {
+    ): JSX.Element => {
       const translateX = dragX.interpolate({
         inputRange: [-150, 0.5],
         outputRange: [50, 300],
-      });
+      })
 
       const swipeStyle = {
         transform: [
@@ -82,7 +83,7 @@ function ExerciseDrawerForm({
             translateX,
           },
         ],
-      };
+      }
 
       return (
         <View style={styles.deleteContainer}>
@@ -90,14 +91,14 @@ function ExerciseDrawerForm({
             Delete
           </Animated.Text>
         </View>
-      );
-    };
+      )
+    }
 
     return (
       <Swipeable
-        onSwipeableWillOpen={() =>
+        onSwipeableWillOpen={() => {
           removeSetFunction({ exerciseId, setId: itemData.item.id })
-        }
+        }}
         renderRightActions={rightAction}
         rightThreshold={200}
       >
@@ -108,7 +109,7 @@ function ExerciseDrawerForm({
           <View style={[styles.detailsContainer, { flex: 2 }]}>
             {set.weight !== null && set.reps !== null ? (
               <Text style={styles.detailsText}>
-                {set.weight + "x" + set.reps}
+                {set.weight.toString() + 'x' + set.reps.toString()}
               </Text>
             ) : (
               <Text style={styles.detailsText}>-------</Text>
@@ -116,13 +117,13 @@ function ExerciseDrawerForm({
           </View>
           <TextInput
             keyboardType="number-pad"
-            onChangeText={(text) =>
+            onChangeText={(text) => {
               editSetWeightFunction({
                 exerciseId,
                 setId: itemData.item.id,
                 weight: Number(text) ?? 0,
               })
-            }
+            }}
             style={[styles.detailsContainer, { flex: 1 }]}
           >
             {set.weight}
@@ -130,23 +131,23 @@ function ExerciseDrawerForm({
           <TextInput
             keyboardType="number-pad"
             style={[styles.detailsContainer, { flex: 1 }]}
-            onChangeText={(text) =>
+            onChangeText={(text) => {
               editSetRepsFunction({
                 exerciseId,
                 setId: itemData.item.id,
                 reps: Number(text) ?? 0,
               })
-            }
+            }}
           >
             {set.reps}
           </TextInput>
         </View>
       </Swipeable>
-    );
+    )
   }
 
-  function renderExercises(itemData: any) {
-    const exerciseId = itemData.item.id;
+  function renderExercises(itemData: any): JSX.Element {
+    const exerciseId = itemData.item.id
 
     return (
       <View>
@@ -157,7 +158,9 @@ function ExerciseDrawerForm({
               styles.deleteExerciseButton,
               pressed ? styles.buttonPressed : null,
             ]}
-            onPress={() => removeExerciseFunction({ id: exerciseId })}
+            onPress={() => {
+              removeExerciseFunction({ id: exerciseId })
+            }}
           >
             <Text style={styles.deleteExerciseText}>Delete Exercise</Text>
           </Pressable>
@@ -171,21 +174,21 @@ function ExerciseDrawerForm({
         <FlatList
           data={itemData.item.sets}
           keyExtractor={(item) => item.id}
-          renderItem={(itemData) =>
-            renderSet({ itemData, exerciseId: exerciseId })
-          }
+          renderItem={(itemData) => renderSet({ itemData, exerciseId })}
         />
         <Pressable
           style={({ pressed }) => [
             styles.addSetButton,
             pressed ? styles.buttonPressed : null,
           ]}
-          onPress={() => addSetFunction(itemData.item.id)}
+          onPress={() => {
+            addSetFunction(itemData.item.id)
+          }}
         >
           <Text style={styles.addSetButtonText}>Add Set</Text>
         </Pressable>
       </View>
-    );
+    )
   }
 
   return (
@@ -202,59 +205,59 @@ function ExerciseDrawerForm({
         }
       />
     </View>
-  );
+  )
 }
 
-export default ExerciseDrawerForm;
+export default ExerciseDrawerForm
 
 const styles = StyleSheet.create({
   exerciseName: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   columnHeadersContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
 
     width: 350,
   },
   headerText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 30,
     width: 350,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   detailsContainer: {
-    backgroundColor: "#e0e0e0",
+    backgroundColor: '#e0e0e0',
     margin: 4,
     borderRadius: 8,
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
   },
   detailsText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   addSetButton: {
     flex: 1,
-    backgroundColor: "#e0e0e0",
+    backgroundColor: '#e0e0e0',
     borderRadius: 8,
     height: 30,
     marginTop: 10,
     marginBottom: 20,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   addSetButtonText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   deleteContainer: {
-    backgroundColor: "#ff7885",
+    backgroundColor: '#ff7885',
     flex: 1,
   },
   deleteText: {
-    color: "white",
-    alignSelf: "flex-end",
+    color: 'white',
+    alignSelf: 'flex-end',
     fontSize: 18,
   },
   buttonPressed: {
@@ -262,34 +265,34 @@ const styles = StyleSheet.create({
   },
   deleteExerciseButton: {},
   exerciseNameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   deleteExerciseText: {
-    color: "red",
+    color: 'red',
   },
   addExerciseButton: {
-    backgroundColor: "gray",
+    backgroundColor: 'gray',
     padding: 10,
     width: 350,
     borderRadius: 8,
   },
   addExerciseText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   cancelWorkoutButton: {
-    backgroundColor: "#ff7885",
+    backgroundColor: '#ff7885',
     padding: 10,
     width: 350,
     borderRadius: 8,
     marginTop: 10,
   },
   cancelWorkoutText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   contentContainer: {
     height: 400,
-    alignItems: "center",
+    alignItems: 'center',
   },
-});
+})
