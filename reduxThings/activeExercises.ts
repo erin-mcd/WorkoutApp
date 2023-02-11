@@ -8,15 +8,12 @@ import {
 
 const init: Exercise[] = []
 
-function updateStatsByExercise(
-  finishedExercises: Exercise[],
-  date: string
-): void {
+function updateStatsByExercise(finishedExercises: Exercise[]): void {
   finishedExercises.forEach((exercise) => {
     createExerciseStatTable(exercise.name)
     exercise.sets.forEach((set) => {
       if (set.weight !== null && set.reps !== null) {
-        addSetToExerciseStatTable(exercise.name, date, set.weight, set.reps)
+        addSetToExerciseStatTable(exercise.name, set.weight, set.reps)
       }
     })
   })
@@ -27,7 +24,6 @@ const activeExercisesSlices = createSlice({
   initialState: {
     activeWorkout: false,
     activeExercises: init,
-    startDate: '',
     pickExerciseModalVisible: false,
   },
   reducers: {
@@ -110,17 +106,11 @@ const activeExercisesSlices = createSlice({
     },
     startWorkout: (state) => {
       state.activeWorkout = true
-      state.startDate = new Date().toLocaleDateString(undefined, {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
     },
     endWorkout: (state) => {
       const jsonObject = JSON.stringify(state.activeExercises)
-      addWorkout(jsonObject, state.startDate)
-      updateStatsByExercise(state.activeExercises, state.startDate)
+      addWorkout(jsonObject)
+      updateStatsByExercise(state.activeExercises)
       state.activeWorkout = false
       state.activeExercises = []
     },
