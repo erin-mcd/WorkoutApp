@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import * as SQLite from 'expo-sqlite'
-import { type SQLTransaction } from 'expo-sqlite'
+import React, { useEffect, useState } from 'react'
 import { BarChart } from 'react-native-chart-kit'
+import { getStatTableFromDB } from '../../db-service'
 
 function getSunday(workoutDate: string): string {
   const date = new Date(workoutDate)
@@ -27,7 +26,15 @@ const init: any[] = []
 
 function ExerciseCountByWeekBarChart(): JSX.Element {
   const [statTable, setStatTable] = useState(init)
-  const db = SQLite.openDatabase('db.workoutDB')
+
+  useEffect(() => {
+    async function getStats(): Promise<void> {
+      const stats = await getStatTableFromDB()
+      setStatTable(stats)
+    }
+
+    void getStats()
+  }, [statTable, setStatTable])
 
   function formatTableData(): {
     labels: string[]
@@ -52,20 +59,6 @@ function ExerciseCountByWeekBarChart(): JSX.Element {
 
     return graphData
   }
-
-  const setStatTableFromDB = (): void => {
-    db.transaction((tx: SQLTransaction) => {
-      tx.executeSql(
-        "SELECT strftime('%W', date) AS WeekNumber, COUNT(id) as count, date FROM workoutObjects GROUP BY WeekNumber",
-        [],
-        (txObj, resultSet) => {
-          setStatTable(resultSet.rows._array)
-        }
-      )
-    })
-  }
-
-  setStatTableFromDB()
 
   return (
     <BarChart

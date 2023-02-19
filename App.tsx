@@ -8,10 +8,14 @@ import HistoryScreen from './screens/HistoryScreen'
 import StatsScreen from './screens/StatsScreen'
 import StartWorkoutScreen from './screens/StartWorkoutScreen'
 import ExercisesScreen from './screens/ExercisesScreen'
-import { createWorkoutObjectTable } from './db-service'
+import {
+  createExerciseTypesTable,
+  createWorkoutObjectTable,
+} from './db-service'
 import SettingsScreen from './screens/Settings'
 
 createWorkoutObjectTable()
+createExerciseTypesTable()
 const BottomTabs = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
