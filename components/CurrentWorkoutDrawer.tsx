@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 // @ts-expect-error not available for component
 import BottomDrawer from 'react-native-bottom-drawer-view'
 import {
-  addActiveExercise,
+  addActiveExercises,
   endWorkout,
   setPickExerciseModalVisible,
   removeActiveExercise,
@@ -12,6 +12,8 @@ import {
   editSetReps,
   editSetWeight,
   cancelWorkout,
+  addToAddList,
+  removeFromAddList,
 } from '../reduxThings/activeExercises'
 import { useDispatch, useSelector } from 'react-redux'
 import PickExerciseModal from './PickExerciseModal'
@@ -27,17 +29,20 @@ function CurrentWorkoutDrawer(): JSX.Element {
   const pickExerciseModalVisible: boolean = useSelector(
     (state: RootState) => state.activeExercises.pickExerciseModalVisible
   )
+  const exercisesToAddListActive: string[] = useSelector(
+    (state: RootState) => state.activeExercises.exercisesToAdd
+  )
 
   return (
     <>
       <BottomDrawer containerHeight={800} downDisplay={500}>
         <View style={styles.drawer}>
-          <Pressable
+          <TouchableOpacity
             style={styles.finishButton}
             onPress={() => dispatch(endWorkout())}
           >
             <Text style={styles.finishButtonText}>Finish</Text>
-          </Pressable>
+          </TouchableOpacity>
           <ExerciseDrawerForm
             exercises={activeExercises}
             removeExerciseFunction={({ id }) =>
@@ -73,11 +78,12 @@ function CurrentWorkoutDrawer(): JSX.Element {
         </View>
       </BottomDrawer>
       <PickExerciseModal
+        exercisesToAdd={exercisesToAddListActive}
+        addFunction={(name: string) => dispatch(addToAddList(name))}
+        removeFunction={(name: string) => dispatch(removeFromAddList(name))}
         open={pickExerciseModalVisible}
         onClose={() => setPickExerciseModalVisible(false)}
-        addExerciseFunction={({ name }) =>
-          dispatch(addActiveExercise({ name }))
-        }
+        addExercisesFunction={() => dispatch(addActiveExercises())}
       />
     </>
   )

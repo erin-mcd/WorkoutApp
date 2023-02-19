@@ -1,25 +1,31 @@
 import React from 'react'
-import { Text, View, FlatList, StyleSheet, Pressable } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
+import ExerciseListItem from './ExerciseListItem'
 interface Props {
+  removeFunction?: (name: string) => void
+  addFunction?: (name: string) => void
   onTap: () => void
-  isActiveWorkout: boolean
-  isHistoryEdit: boolean
-  addExerciseFunction?: ({ name }: { name: string }) => void
+  exercisesToAdd?: string[]
 }
 
 function ExerciseList({
+  exercisesToAdd,
   onTap,
-  isActiveWorkout = false,
-  isHistoryEdit = false,
-  addExerciseFunction,
+  removeFunction,
+  addFunction,
 }: Props): JSX.Element {
   function tapHandler(name: string): void {
     if (
-      (isActiveWorkout || isHistoryEdit) &&
-      addExerciseFunction !== undefined
+      removeFunction !== undefined &&
+      addFunction !== undefined &&
+      exercisesToAdd !== undefined
     ) {
-      addExerciseFunction({ name })
+      if (exercisesToAdd.includes(name)) {
+        removeFunction(name)
+      } else {
+        addFunction(name)
+      }
     }
     onTap()
   }
@@ -35,14 +41,15 @@ function ExerciseList({
     }
 
     return (
-      <Pressable
-        onPress={() => {
-          tapHandler(exerciseItemProps.name)
-        }}
-        style={styles.exerciseListItem}
-      >
-        <Text>{exerciseItemProps.name}</Text>
-      </Pressable>
+      <ExerciseListItem
+        onTap={tapHandler}
+        name={exerciseItemProps.name}
+        isSelected={
+          exercisesToAdd !== undefined
+            ? exercisesToAdd.includes(exerciseItemProps.name)
+            : false
+        }
+      />
     )
   }
 
@@ -58,12 +65,3 @@ function ExerciseList({
 }
 
 export default ExerciseList
-
-const styles = StyleSheet.create({
-  exerciseListItem: {
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
-    padding: 10,
-    margin: 4,
-  },
-})
