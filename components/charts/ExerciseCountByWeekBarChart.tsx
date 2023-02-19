@@ -29,7 +29,6 @@ function ExerciseCountByWeekBarChart(): JSX.Element {
   const [statTable, setStatTable] = useState(init)
   const db = SQLite.openDatabase('db.workoutDB')
 
-  // console.log(JSON.stringify(statTable))
   function formatTableData(): {
     labels: string[]
     datasets: any[]

@@ -1,30 +1,51 @@
 import React from 'react'
-import { StyleSheet, View, Modal } from 'react-native'
+import { StyleSheet, View, Modal, Text, TouchableOpacity } from 'react-native'
+
 import ExerciseList from './ExerciseList'
 
 interface Props {
   open: boolean
+  addFunction: (name: string) => void
+  removeFunction: (name: string) => void
   onClose: () => void
-  addExerciseFunction: ({ name }: { name: string }) => void
+  addExercisesFunction: () => void
+  exercisesToAdd: string[]
 }
 
 function PickExerciseModal({
+  exercisesToAdd,
+  addFunction,
+  removeFunction,
   open,
   onClose,
-  addExerciseFunction,
+  addExercisesFunction,
 }: Props): JSX.Element {
+  function addTapHandler(): void {
+    if (addExercisesFunction !== undefined) {
+      addExercisesFunction()
+    }
+  }
+
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
+          <TouchableOpacity
+            style={styles.addButtonContainer}
+            onPress={() => {
+              addTapHandler()
+            }}
+          >
+            <Text style={styles.addButtonText}>Add</Text>
+          </TouchableOpacity>
           <View>
             <ExerciseList
-              isActiveWorkout={true}
-              isHistoryEdit={true}
+              exercisesToAdd={exercisesToAdd}
+              addFunction={addFunction}
+              removeFunction={removeFunction}
               onTap={() => {
                 onClose()
               }}
-              addExerciseFunction={addExerciseFunction}
             />
           </View>
         </View>
@@ -92,5 +113,13 @@ const styles = StyleSheet.create({
     marginBottom: 80,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  addButtonContainer: {
+    margin: 10,
+    alignSelf: 'flex-end',
+  },
+  addButtonText: {
+    fontSize: 16,
+    color: 'blue',
   },
 })

@@ -4,6 +4,7 @@ import { editWorkoutHistory } from '../db-service'
 
 const init: Exercise[] = []
 const initId: number = -1
+const toAddInit: string[] = []
 
 const editHistorySlices = createSlice({
   name: 'editHistory',
@@ -12,6 +13,7 @@ const editHistorySlices = createSlice({
     id: initId,
     isEditing: false,
     pickExerciseModalVisible: false,
+    exercisesToAdd: toAddInit,
   },
   reducers: {
     setHistoryValues: (state, action) => {
@@ -74,19 +76,23 @@ const editHistorySlices = createSlice({
 
       state.historyExercises[index].sets[setIndex].reps = action.payload.reps
     },
-    addExerciseHistory: (state, action) => {
-      const newExercise = {
-        id: Math.random(),
-        name: action.payload.name,
-        sets: [
-          {
-            weight: null,
-            reps: null,
-            id: 1,
-          },
-        ],
-      }
-      state.historyExercises.push(newExercise)
+    addExercisesHistory: (state) => {
+      state.exercisesToAdd.forEach((name) => {
+        const newExercise = {
+          id: Math.random(),
+          name,
+          sets: [
+            {
+              weight: null,
+              reps: null,
+              id: 1,
+            },
+          ],
+        }
+        state.historyExercises.push(newExercise)
+      })
+
+      state.exercisesToAdd = []
       state.pickExerciseModalVisible = false
     },
     removeExerciseHistory: (state, action) => {
@@ -111,11 +117,21 @@ const editHistorySlices = createSlice({
     setPickExerciseHistoryModalVisible: (state, action) => {
       state.pickExerciseModalVisible = action.payload
     },
+    addToAddListHistory: (state, action) => {
+      const newExercises = [...state.exercisesToAdd, action.payload]
+      state.exercisesToAdd = newExercises
+    },
+    removeFromAddListHistory: (state, action) => {
+      const newExercises = state.exercisesToAdd.filter(
+        (exercise) => exercise !== action.payload
+      )
+      state.exercisesToAdd = newExercises
+    },
   },
 })
 
 export const addSetHistory = editHistorySlices.actions.addSetHistory
-export const addExerciseHistory = editHistorySlices.actions.addExerciseHistory
+export const addExercisesHistory = editHistorySlices.actions.addExercisesHistory
 export const removeSetHistory = editHistorySlices.actions.removeSetHistory
 export const removeExerciseHistory =
   editHistorySlices.actions.removeExerciseHistory
@@ -128,4 +144,7 @@ export const setHistoryValues = editHistorySlices.actions.setHistoryValues
 export const setIsEditing = editHistorySlices.actions.setIsEditing
 export const setPickExerciseHistoryModalVisible =
   editHistorySlices.actions.setPickExerciseHistoryModalVisible
+export const addToAddListHistory = editHistorySlices.actions.addToAddListHistory
+export const removeFromAddListHistory =
+  editHistorySlices.actions.removeFromAddListHistory
 export default editHistorySlices.reducer

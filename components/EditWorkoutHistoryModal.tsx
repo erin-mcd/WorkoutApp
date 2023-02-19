@@ -4,12 +4,14 @@ import ExerciseDrawerForm from './ExerciseDrawerForm'
 import { type Exercise } from '../models/Exercise'
 import PickExerciseModal from './PickExerciseModal'
 import {
-  addExerciseHistory,
+  addExercisesHistory,
   addSetHistory,
+  addToAddListHistory,
   editSetRepsHistory,
   editSetWeightHistory,
   endHistoryEdit,
   removeExerciseHistory,
+  removeFromAddListHistory,
   removeSetHistory,
   setIsEditing,
   setPickExerciseHistoryModalVisible,
@@ -28,6 +30,9 @@ function EditWorkoutHistoryModal({ open, onClose }: Props): JSX.Element {
   )
   const pickExerciseModalVisible: boolean = useSelector(
     (state: RootState) => state.editHistory.pickExerciseModalVisible
+  )
+  const exercisesToAddListActiveHistory: string[] = useSelector(
+    (state: RootState) => state.editHistory.exercisesToAdd
   )
   const dispatch = useDispatch()
 
@@ -81,11 +86,14 @@ function EditWorkoutHistoryModal({ open, onClose }: Props): JSX.Element {
           />
         </View>
         <PickExerciseModal
+          exercisesToAdd={exercisesToAddListActiveHistory}
+          addFunction={(name: string) => dispatch(addToAddListHistory(name))}
+          removeFunction={(name: string) =>
+            dispatch(removeFromAddListHistory(name))
+          }
           open={pickExerciseModalVisible}
           onClose={() => setPickExerciseHistoryModalVisible(false)}
-          addExerciseFunction={({ name }) =>
-            dispatch(addExerciseHistory({ name }))
-          }
+          addExercisesFunction={() => dispatch(addExercisesHistory())}
         />
       </View>
     </Modal>

@@ -33,8 +33,6 @@ function Exercises({ navigation }: any): JSX.Element {
           onTap={() => {
             console.log('hi')
           }}
-          isActiveWorkout={false}
-          isHistoryEdit={false}
         />
       </View>
       <CreateExerciseTypeModal

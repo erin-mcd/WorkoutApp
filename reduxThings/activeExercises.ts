@@ -7,6 +7,7 @@ import {
 } from '../db-service'
 
 const init: Exercise[] = []
+const toAddInit: string[] = []
 
 function updateStatsByExercise(finishedExercises: Exercise[]): void {
   finishedExercises.forEach((exercise) => {
@@ -25,6 +26,7 @@ const activeExercisesSlices = createSlice({
     activeWorkout: false,
     activeExercises: init,
     pickExerciseModalVisible: false,
+    exercisesToAdd: toAddInit,
   },
   reducers: {
     addSet: (state, action) => {
@@ -78,19 +80,23 @@ const activeExercisesSlices = createSlice({
 
       state.activeExercises[index].sets[setIndex].reps = action.payload.reps
     },
-    addActiveExercise: (state, action) => {
-      const newExercise = {
-        id: Math.random(),
-        name: action.payload.name,
-        sets: [
-          {
-            weight: null,
-            reps: null,
-            id: 1,
-          },
-        ],
-      }
-      state.activeExercises.push(newExercise)
+    addActiveExercises: (state) => {
+      state.exercisesToAdd.forEach((name) => {
+        const newExercise = {
+          id: Math.random(),
+          name,
+          sets: [
+            {
+              weight: null,
+              reps: null,
+              id: 1,
+            },
+          ],
+        }
+        state.activeExercises.push(newExercise)
+      })
+
+      state.exercisesToAdd = []
       state.pickExerciseModalVisible = false
     },
     removeActiveExercise: (state, action) => {
@@ -121,11 +127,22 @@ const activeExercisesSlices = createSlice({
     setPickExerciseModalVisible: (state, action) => {
       state.pickExerciseModalVisible = action.payload
     },
+    addToAddList: (state, action) => {
+      const newExercises = [...state.exercisesToAdd, action.payload]
+      state.exercisesToAdd = newExercises
+    },
+    removeFromAddList: (state, action) => {
+      const newExercises = state.exercisesToAdd.filter(
+        (exercise) => exercise !== action.payload
+      )
+      state.exercisesToAdd = newExercises
+    },
   },
 })
 
 export const addSet = activeExercisesSlices.actions.addSet
-export const addActiveExercise = activeExercisesSlices.actions.addActiveExercise
+export const addActiveExercises =
+  activeExercisesSlices.actions.addActiveExercises
 export const removeSet = activeExercisesSlices.actions.removeSet
 export const removeActiveExercise =
   activeExercisesSlices.actions.removeActiveExercise
@@ -137,4 +154,6 @@ export const endWorkout = activeExercisesSlices.actions.endWorkout
 export const cancelWorkout = activeExercisesSlices.actions.cancelWorkout
 export const setPickExerciseModalVisible =
   activeExercisesSlices.actions.setPickExerciseModalVisible
+export const addToAddList = activeExercisesSlices.actions.addToAddList
+export const removeFromAddList = activeExercisesSlices.actions.removeFromAddList
 export default activeExercisesSlices.reducer
