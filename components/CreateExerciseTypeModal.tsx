@@ -9,8 +9,7 @@ import {
   Alert,
 } from 'react-native'
 
-import { useDispatch } from 'react-redux'
-import { addExerciseType } from '../reduxThings/exerciseTypes'
+import { addExerciseTypeToDB } from '../db-service'
 
 interface Props {
   open: boolean
@@ -18,17 +17,21 @@ interface Props {
 }
 
 function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
-  const dispatch = useDispatch()
   const [name, setName] = useState('')
+  const [category, setCategory] = useState('')
+
+  const [description, setDescription] = useState('')
 
   function nameInputHandler(enteredName: string): void {
     setName(enteredName)
   }
 
-  function getId(): number {
-    const id = Math.random()
+  function categoryInputHandler(enteredName: string): void {
+    setCategory(enteredName)
+  }
 
-    return id
+  function descriptionInputHandler(enteredName: string): void {
+    setDescription(enteredName)
   }
 
   function validateInputs(name: string): string[] {
@@ -48,7 +51,7 @@ function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
     if (errors.length > 0) {
       Alert.alert(JSON.stringify(errors))
     } else {
-      dispatch(addExerciseType({ name, id: getId() }))
+      addExerciseTypeToDB(name, category, description)
     }
 
     onClose()
@@ -63,6 +66,16 @@ function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
               style={styles.textInput}
               placeholder="ExerciseType Name"
               onChangeText={nameInputHandler}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="ExerciseType Category"
+              onChangeText={categoryInputHandler}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="ExerciseType Description"
+              onChangeText={descriptionInputHandler}
             />
           </View>
           <View style={styles.buttonsContainer}>

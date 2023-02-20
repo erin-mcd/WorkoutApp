@@ -1,11 +1,15 @@
 import * as SQLite from 'expo-sqlite'
 const db = SQLite.openDatabase('db.workoutDB')
 
-export const addExerciseType = (): void => {
+export const addExerciseTypeToDB = (
+  name: string,
+  category: string,
+  description: string
+): void => {
   db.transaction((tx) => {
     tx.executeSql(
       'INSERT INTO exerciseTypes (name, category, description) values (?, ?, ?)',
-      ['testname', 'testcategory', 'testdescription']
+      [name, category, description]
     )
   })
 }
@@ -99,5 +103,23 @@ export const getWorkoutTableFromDB = async (): Promise<any[]> => {
         resolve(resultSet.rows._array)
       })
     })
+  })
+}
+
+export const getExerciseTypesFromDB = async (): Promise<any[]> => {
+  return await new Promise((resolve) => {
+    db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM exerciseTypes', [], (txObj, resultSet) => {
+        resolve(resultSet.rows._array)
+      })
+    })
+  })
+}
+
+export const deleteExerciseType = (name: string): void => {
+  db.transaction((tx) => {
+    tx.executeSql('DELETE FROM exerciseTypes WHERE name = (name) values (?)', [
+      name,
+    ])
   })
 }

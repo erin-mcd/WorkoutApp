@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { getExerciseTypesFromDB } from '../db-service'
 import ExerciseListItem from './ExerciseListItem'
 interface Props {
   removeFunction?: (name: string) => void
@@ -9,12 +9,25 @@ interface Props {
   exercisesToAdd?: string[]
 }
 
+const init: any[] = []
+
 function ExerciseList({
   exercisesToAdd,
   onTap,
   removeFunction,
   addFunction,
 }: Props): JSX.Element {
+  const [exerciseTypesTable, setExerciseTypesTable] = useState(init)
+
+  useEffect(() => {
+    async function getExercises(): Promise<void> {
+      const exerciseTypes = await getExerciseTypesFromDB()
+      setExerciseTypesTable(exerciseTypes)
+    }
+
+    void getExercises()
+  }, [exerciseTypesTable, setExerciseTypesTable])
+
   function tapHandler(name: string): void {
     if (
       removeFunction !== undefined &&
@@ -29,10 +42,6 @@ function ExerciseList({
     }
     onTap()
   }
-
-  const exerciseTypesList = useSelector(
-    (state: any) => state.exerciseTypesList.exerciseTypes
-  )
 
   function renderExerciseType(itemData: any): JSX.Element {
     const exerciseItemProps = {
@@ -56,7 +65,7 @@ function ExerciseList({
   return (
     <View>
       <FlatList
-        data={exerciseTypesList}
+        data={exerciseTypesTable}
         keyExtractor={(item) => item.id}
         renderItem={renderExerciseType}
       />
