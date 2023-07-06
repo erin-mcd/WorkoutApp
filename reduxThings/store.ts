@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import exerciseTypesReducer from './exerciseTypes'
 import activeExercisesReducer from './activeExercises'
 import editHistoryReducer from './editHistory'
 
 export const store = configureStore({
   reducer: {
-    exerciseTypesList: exerciseTypesReducer,
     activeExercises: activeExercisesReducer,
     editHistory: editHistoryReducer,
   },

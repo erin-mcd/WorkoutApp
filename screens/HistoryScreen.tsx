@@ -1,25 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import * as SQLite from 'expo-sqlite'
-
 import FinishedWorkoutListings from '../components/FinishedWorkoutListings'
-import { type SQLTransaction } from 'expo-sqlite'
-const db = SQLite.openDatabase('db.workoutDB')
-
+import { getWorkoutTableFromDB } from '../db-service'
 const init: any[] = []
 
 function HistoryScreen(): JSX.Element {
   const [workoutTable, setWorkoutTable] = useState(init)
 
-  const setWorkoutTableFromDB = (db: SQLite.WebSQLDatabase): void => {
-    db.transaction((tx: SQLTransaction) => {
-      tx.executeSql('SELECT * FROM workoutObjects', [], (txObj, resultSet) => {
-        setWorkoutTable(resultSet.rows._array)
-      })
-    })
-  }
+  useEffect(() => {
+    async function getStats(): Promise<void> {
+      const workoutHistory = await getWorkoutTableFromDB()
+      setWorkoutTable(workoutHistory)
+    }
 
-  setWorkoutTableFromDB(db)
+    void getStats()
+  }, [workoutTable, setWorkoutTable])
 
   return (
     <>

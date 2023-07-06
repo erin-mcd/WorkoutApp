@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { getExerciseTypesFromDB } from '../db-service'
+import { type ExerciseType } from '../models/ExerciseType'
 import ExerciseListItem from './ExerciseListItem'
 interface Props {
   removeFunction?: (name: string) => void
   addFunction?: (name: string) => void
-  onTap: () => void
+  onTap: (exerciseInfo: ExerciseType) => void
   exercisesToAdd?: string[]
 }
+
+const init: any[] = []
 
 function ExerciseList({
   exercisesToAdd,
@@ -15,38 +18,40 @@ function ExerciseList({
   removeFunction,
   addFunction,
 }: Props): JSX.Element {
-  function tapHandler(name: string): void {
+  const [exerciseTypesTable, setExerciseTypesTable] = useState(init)
+
+  useEffect(() => {
+    async function getExercises(): Promise<void> {
+      const exerciseTypes = await getExerciseTypesFromDB()
+      setExerciseTypesTable(exerciseTypes)
+    }
+
+    void getExercises()
+  }, [exerciseTypesTable, setExerciseTypesTable])
+
+  function tapHandler(exerciseInfo: ExerciseType): void {
     if (
       removeFunction !== undefined &&
       addFunction !== undefined &&
       exercisesToAdd !== undefined
     ) {
-      if (exercisesToAdd.includes(name)) {
-        removeFunction(name)
+      if (exercisesToAdd.includes(exerciseInfo.name)) {
+        removeFunction(exerciseInfo.name)
       } else {
-        addFunction(name)
+        addFunction(exerciseInfo.name)
       }
     }
-    onTap()
+    onTap(exerciseInfo)
   }
 
-  const exerciseTypesList = useSelector(
-    (state: any) => state.exerciseTypesList.exerciseTypes
-  )
-
-  function renderExerciseType(itemData: any): JSX.Element {
-    const exerciseItemProps = {
-      name: itemData.item.name,
-      id: itemData.item.id,
-    }
-
+  function renderExerciseType({ item }: any): JSX.Element {
     return (
       <ExerciseListItem
         onTap={tapHandler}
-        name={exerciseItemProps.name}
+        exerciseInfo={item}
         isSelected={
           exercisesToAdd !== undefined
-            ? exercisesToAdd.includes(exerciseItemProps.name)
+            ? exercisesToAdd.includes(item.name)
             : false
         }
       />
@@ -56,7 +61,7 @@ function ExerciseList({
   return (
     <View>
       <FlatList
-        data={exerciseTypesList}
+        data={exerciseTypesTable}
         keyExtractor={(item) => item.id}
         renderItem={renderExerciseType}
       />

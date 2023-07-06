@@ -3,9 +3,17 @@ import { StyleSheet, View, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import CreateExerciseTypeModal from '../components/CreateExerciseTypeModal'
 import ExerciseList from '../components/ExerciseList'
+import ExerciseInfoModal from '../components/ExerciseInfoModal'
 
 function Exercises({ navigation }: any): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false)
+  const [infoModalVisible, setInfoModalModalVisible] = useState(false)
+  const [exercise, setExercise] = useState({
+    name: '',
+    description: '',
+    category: '',
+    id: 0,
+  })
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,8 +38,9 @@ function Exercises({ navigation }: any): JSX.Element {
     <>
       <View style={styles.exerciseList}>
         <ExerciseList
-          onTap={() => {
-            console.log('hi')
+          onTap={(exerciseInfo) => {
+            setExercise(exerciseInfo)
+            setInfoModalModalVisible(true)
           }}
         />
       </View>
@@ -39,6 +48,13 @@ function Exercises({ navigation }: any): JSX.Element {
         open={modalVisible}
         onClose={() => {
           setModalVisible(false)
+        }}
+      />
+      <ExerciseInfoModal
+        exerciseType={exercise}
+        open={infoModalVisible}
+        onClose={() => {
+          setInfoModalModalVisible(false)
         }}
       />
     </>
