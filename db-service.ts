@@ -118,8 +118,6 @@ export const getExerciseTypesFromDB = async (): Promise<any[]> => {
 
 export const deleteExerciseType = (name: string): void => {
   db.transaction((tx) => {
-    tx.executeSql('DELETE FROM exerciseTypes WHERE name = (name) values (?)', [
-      name,
-    ])
+    tx.executeSql('DELETE FROM exerciseTypes WHERE name= ?', [name])
   })
 }

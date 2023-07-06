@@ -1,25 +1,26 @@
 import React from 'react'
 import { Pressable, StyleSheet, Text } from 'react-native'
+import { type ExerciseType } from '../models/ExerciseType'
 
 interface Props {
-  name: string
+  exerciseInfo: ExerciseType
   isSelected?: boolean
-  onTap: (name: string) => void
+  onTap: (exerciseInfo: ExerciseType) => void
 }
 
 function ExerciseListItem({
-  name,
+  exerciseInfo,
   isSelected = false,
   onTap,
 }: Props): JSX.Element {
   return (
     <Pressable
       onPress={() => {
-        onTap(name)
+        onTap(exerciseInfo)
       }}
       style={isSelected ? styles.selectedContainer : styles.unselectedContainer}
     >
-      <Text>{name}</Text>
+      <Text>{exerciseInfo.name}</Text>
     </Pressable>
   )
 }

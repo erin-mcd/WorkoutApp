@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { View, FlatList } from 'react-native'
 import { getExerciseTypesFromDB } from '../db-service'
+import { type ExerciseType } from '../models/ExerciseType'
 import ExerciseListItem from './ExerciseListItem'
 interface Props {
   removeFunction?: (name: string) => void
   addFunction?: (name: string) => void
-  onTap: () => void
+  onTap: (exerciseInfo: ExerciseType) => void
   exercisesToAdd?: string[]
 }
 
@@ -28,34 +29,29 @@ function ExerciseList({
     void getExercises()
   }, [exerciseTypesTable, setExerciseTypesTable])
 
-  function tapHandler(name: string): void {
+  function tapHandler(exerciseInfo: ExerciseType): void {
     if (
       removeFunction !== undefined &&
       addFunction !== undefined &&
       exercisesToAdd !== undefined
     ) {
-      if (exercisesToAdd.includes(name)) {
-        removeFunction(name)
+      if (exercisesToAdd.includes(exerciseInfo.name)) {
+        removeFunction(exerciseInfo.name)
       } else {
-        addFunction(name)
+        addFunction(exerciseInfo.name)
       }
     }
-    onTap()
+    onTap(exerciseInfo)
   }
 
-  function renderExerciseType(itemData: any): JSX.Element {
-    const exerciseItemProps = {
-      name: itemData.item.name,
-      id: itemData.item.id,
-    }
-
+  function renderExerciseType({ item }: any): JSX.Element {
     return (
       <ExerciseListItem
         onTap={tapHandler}
-        name={exerciseItemProps.name}
+        exerciseInfo={item}
         isSelected={
           exercisesToAdd !== undefined
-            ? exercisesToAdd.includes(exerciseItemProps.name)
+            ? exercisesToAdd.includes(item.name)
             : false
         }
       />

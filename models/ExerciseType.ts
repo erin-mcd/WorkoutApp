@@ -1,4 +1,6 @@
-export class ExerciseType {
-  id!: number
-  name!: string
+export interface ExerciseType {
+  id: number
+  name: string
+  description: string
+  category: string
 }
