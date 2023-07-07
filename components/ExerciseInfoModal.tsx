@@ -9,11 +9,11 @@ interface Props {
   onClose: () => void
 }
 
-function ExerciseInfoModal({
+const ExerciseInfoModal = ({
   exerciseType,
   open,
   onClose,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   return (
     <Modal transparent={true} visible={open}>
       <View style={styles.outerContainer}>

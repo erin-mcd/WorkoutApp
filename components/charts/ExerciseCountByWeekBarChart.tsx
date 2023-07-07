@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BarChart } from 'react-native-chart-kit'
 import { getStatTableFromDB } from '../../db-service'
 
-function getSunday(workoutDate: string): string {
+const getSunday = (workoutDate: string): string => {
   const date = new Date(workoutDate)
   const dayOfWeek = date.getDay() + 1
   if (dayOfWeek === 7) {
@@ -24,7 +24,7 @@ function getSunday(workoutDate: string): string {
 }
 const init: any[] = []
 
-function ExerciseCountByWeekBarChart(): JSX.Element {
+const ExerciseCountByWeekBarChart = (): JSX.Element => {
   const [statTable, setStatTable] = useState(init)
 
   useEffect(() => {
@@ -36,10 +36,10 @@ function ExerciseCountByWeekBarChart(): JSX.Element {
     void getStats()
   }, [statTable, setStatTable])
 
-  function formatTableData(): {
+  const formatTableData = (): {
     labels: string[]
     datasets: any[]
-  } {
+  } => {
     const labels: string[] = []
     const countData: number[] = []
     const sets: any[] = []

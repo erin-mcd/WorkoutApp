@@ -8,11 +8,11 @@ interface Props {
   onTap: (exerciseInfo: ExerciseType) => void
 }
 
-function ExerciseListItem({
+const ExerciseListItem = ({
   exerciseInfo,
   isSelected = false,
   onTap,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   return (
     <Pressable
       onPress={() => {
@@ -25,6 +25,7 @@ function ExerciseListItem({
   )
 }
 export default ExerciseListItem
+
 const styles = StyleSheet.create({
   selectedContainer: {
     borderBottomColor: 'gray',

@@ -4,7 +4,7 @@ import FinishedWorkoutListings from '../components/FinishedWorkoutListings'
 import { getWorkoutTableFromDB } from '../db-service'
 const init: any[] = []
 
-function HistoryScreen(): JSX.Element {
+const HistoryScreen = (): JSX.Element => {
   const [workoutTable, setWorkoutTable] = useState(init)
 
   useEffect(() => {

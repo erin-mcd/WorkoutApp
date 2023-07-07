@@ -5,44 +5,36 @@ import ExerciseList from './ExerciseList'
 
 interface Props {
   open: boolean
-  addFunction: (name: string) => void
-  removeFunction: (name: string) => void
+  add: (name: string) => void
+  remove: (name: string) => void
   onClose: () => void
-  addExercisesFunction: () => void
+  addExercises: () => void
   exercisesToAdd: string[]
 }
 
-function PickExerciseModal({
+const PickExerciseModal = ({
   exercisesToAdd,
-  addFunction,
-  removeFunction,
+  add,
+  remove,
   open,
   onClose,
-  addExercisesFunction,
-}: Props): JSX.Element {
-  function addTapHandler(): void {
-    if (addExercisesFunction !== undefined) {
-      addExercisesFunction()
-    }
-  }
-
+  addExercises,
+}: Props): JSX.Element => {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
         <View style={styles.innerContainer}>
           <TouchableOpacity
             style={styles.addButtonContainer}
-            onPress={() => {
-              addTapHandler()
-            }}
+            onPress={addExercises}
           >
             <Text style={styles.addButtonText}>Add</Text>
           </TouchableOpacity>
           <View>
             <ExerciseList
               exercisesToAdd={exercisesToAdd}
-              addFunction={addFunction}
-              removeFunction={removeFunction}
+              add={add}
+              remove={remove}
               onTap={() => {
                 onClose()
               }}

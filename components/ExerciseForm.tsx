@@ -12,7 +12,7 @@ import {
 import { type Exercise } from '../models/Exercise'
 import { type ExerciseSet } from '../models/ExerciseSet'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import ButtonsComponent from './ButtonsComponent'
+import GeneralButton from './GeneralButton'
 interface Props {
   itemData: any
   exerciseId: number
@@ -20,8 +20,8 @@ interface Props {
 
 interface formProps {
   exercises: Exercise[]
-  removeExerciseFunction: ({ id }: { id: number }) => void
-  editSetRepsFunction: ({
+  removeExercise: ({ id }: { id: number }) => void
+  editSetReps: ({
     exerciseId,
     setId,
     reps,
@@ -30,14 +30,14 @@ interface formProps {
     setId: number
     reps: number
   }) => void
-  removeSetFunction: ({
+  removeSet: ({
     exerciseId,
     setId,
   }: {
     exerciseId: number
     setId: number
   }) => void
-  editSetWeightFunction: ({
+  editSetWeight: ({
     exerciseId,
     setId,
     weight,
@@ -46,22 +46,22 @@ interface formProps {
     setId: number
     weight: number
   }) => void
-  addSetFunction: (id: number) => void
-  cancelFunction: () => void
-  showPickExerciseModalFunction: () => void
+  addSet: (id: number) => void
+  cancel: () => void
+  showPickExerciseModal: () => void
 }
 
-function ExerciseDrawerForm({
+const ExerciseForm = ({
   exercises,
-  removeExerciseFunction,
-  editSetRepsFunction,
-  removeSetFunction,
-  editSetWeightFunction,
-  addSetFunction,
-  cancelFunction,
-  showPickExerciseModalFunction,
-}: formProps): JSX.Element {
-  function renderSet({ itemData, exerciseId }: Props): JSX.Element {
+  removeExercise,
+  editSetReps,
+  removeSet,
+  editSetWeight,
+  addSet,
+  cancel,
+  showPickExerciseModal,
+}: formProps): JSX.Element => {
+  const renderSet = ({ itemData, exerciseId }: Props): JSX.Element => {
     const set: ExerciseSet = itemData.item
     const rightAction = (
       progressAnimatedValue: any,
@@ -97,7 +97,7 @@ function ExerciseDrawerForm({
     return (
       <Swipeable
         onSwipeableWillOpen={() => {
-          removeSetFunction({ exerciseId, setId: itemData.item.id })
+          removeSet({ exerciseId, setId: itemData.item.id })
         }}
         renderRightActions={rightAction}
         rightThreshold={200}
@@ -118,7 +118,7 @@ function ExerciseDrawerForm({
           <TextInput
             keyboardType="number-pad"
             onChangeText={(text) => {
-              editSetWeightFunction({
+              editSetWeight({
                 exerciseId,
                 setId: itemData.item.id,
                 weight: Number(text) ?? 0,
@@ -132,7 +132,7 @@ function ExerciseDrawerForm({
             keyboardType="number-pad"
             style={[styles.detailsContainer, { flex: 1 }]}
             onChangeText={(text) => {
-              editSetRepsFunction({
+              editSetReps({
                 exerciseId,
                 setId: itemData.item.id,
                 reps: Number(text) ?? 0,
@@ -146,20 +146,20 @@ function ExerciseDrawerForm({
     )
   }
 
-  function renderExercises(itemData: any): JSX.Element {
-    const exerciseId = itemData.item.id
+  const renderExercises = ({ item }: any): JSX.Element => {
+    const exerciseId = item.id
 
     return (
       <View>
         <View style={styles.exerciseNameContainer}>
-          <Text style={styles.exerciseName}>{itemData.item.name}</Text>
+          <Text style={styles.exerciseName}>{item.name}</Text>
           <Pressable
             style={({ pressed }) => [
               styles.deleteExerciseButton,
               pressed ? styles.buttonPressed : null,
             ]}
             onPress={() => {
-              removeExerciseFunction({ id: exerciseId })
+              removeExercise({ id: exerciseId })
             }}
           >
             <Text style={styles.deleteExerciseText}>Delete Exercise</Text>
@@ -172,7 +172,7 @@ function ExerciseDrawerForm({
           <Text style={[styles.headerText, { flex: 1 }]}>Rep</Text>
         </View>
         <FlatList
-          data={itemData.item.sets}
+          data={item.sets}
           keyExtractor={(item) => item.id}
           renderItem={(itemData) => renderSet({ itemData, exerciseId })}
         />
@@ -182,7 +182,7 @@ function ExerciseDrawerForm({
             pressed ? styles.buttonPressed : null,
           ]}
           onPress={() => {
-            addSetFunction(itemData.item.id)
+            addSet(item.id)
           }}
         >
           <Text style={styles.addSetButtonText}>Add Set</Text>
@@ -198,17 +198,25 @@ function ExerciseDrawerForm({
         keyExtractor={(item) => JSON.stringify(item.id)}
         renderItem={renderExercises}
         ListFooterComponent={
-          <ButtonsComponent
-            cancelEditFunction={cancelFunction}
-            showPickExerciseModalFunction={showPickExerciseModalFunction}
-          />
+          <View>
+            <GeneralButton
+              title="Add an Exercise"
+              onPress={showPickExerciseModal}
+              customButtonStyle={styles.addExerciseButton}
+            />
+            <GeneralButton
+              title="Cancel"
+              onPress={cancel}
+              customButtonStyle={styles.cancelWorkoutButton}
+            />
+          </View>
         }
       />
     </View>
   )
 }
 
-export default ExerciseDrawerForm
+export default ExerciseForm
 
 const styles = StyleSheet.create({
   exerciseName: {
@@ -274,18 +282,12 @@ const styles = StyleSheet.create({
   },
   addExerciseButton: {
     backgroundColor: 'gray',
-    padding: 10,
-    width: 350,
-    borderRadius: 8,
   },
   addExerciseText: {
     textAlign: 'center',
   },
   cancelWorkoutButton: {
     backgroundColor: '#ff7885',
-    padding: 10,
-    width: 350,
-    borderRadius: 8,
     marginTop: 10,
   },
   cancelWorkoutText: {

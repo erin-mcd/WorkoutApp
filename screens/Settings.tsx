@@ -2,13 +2,13 @@ import React from 'react'
 import { Button, View } from 'react-native'
 import * as SQLite from 'expo-sqlite'
 
-function onDeleteDB(): void {
+const onDeleteDB = (): void => {
   const db = SQLite.openDatabase('db.workoutDB')
   db.closeAsync()
   void db.deleteAsync()
 }
 
-function SettingsScreen(): JSX.Element {
+const SettingsScreen = (): JSX.Element => {
   return (
     <View>
       <Button

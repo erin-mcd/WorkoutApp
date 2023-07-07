@@ -14,14 +14,14 @@ import {
   cancelWorkout,
   addToAddList,
   removeFromAddList,
-} from '../reduxThings/activeExercises'
+} from '../redux/activeExercises'
 import { useDispatch, useSelector } from 'react-redux'
 import PickExerciseModal from './PickExerciseModal'
-import ExerciseDrawerForm from './ExerciseDrawerForm'
+import ExerciseForm from './ExerciseForm'
 import { type Exercise } from '../models/Exercise'
-import { type RootState } from '../reduxThings/store'
+import { type RootState } from '../redux/store'
 
-function CurrentWorkoutDrawer(): JSX.Element {
+const CurrentWorkoutDrawer = (): JSX.Element => {
   const dispatch = useDispatch()
   const activeExercises: Exercise[] = useSelector(
     (state: RootState) => state.activeExercises.activeExercises
@@ -43,16 +43,14 @@ function CurrentWorkoutDrawer(): JSX.Element {
           >
             <Text style={styles.finishButtonText}>Finish</Text>
           </TouchableOpacity>
-          <ExerciseDrawerForm
+          <ExerciseForm
             exercises={activeExercises}
-            removeExerciseFunction={({ id }) =>
-              dispatch(removeActiveExercise({ id }))
-            }
-            removeSetFunction={({ exerciseId, setId }) =>
+            removeExercise={({ id }) => dispatch(removeActiveExercise({ id }))}
+            removeSet={({ exerciseId, setId }) =>
               dispatch(removeSet({ exerciseId, setId }))
             }
-            addSetFunction={(exerciseId) => dispatch(addSet(exerciseId))}
-            editSetRepsFunction={({ exerciseId, setId, reps }) =>
+            addSet={(exerciseId) => dispatch(addSet(exerciseId))}
+            editSetReps={({ exerciseId, setId, reps }) =>
               dispatch(
                 editSetReps({
                   exerciseId,
@@ -61,7 +59,7 @@ function CurrentWorkoutDrawer(): JSX.Element {
                 })
               )
             }
-            editSetWeightFunction={({ exerciseId, setId, weight }) =>
+            editSetWeight={({ exerciseId, setId, weight }) =>
               dispatch(
                 editSetWeight({
                   exerciseId,
@@ -70,8 +68,10 @@ function CurrentWorkoutDrawer(): JSX.Element {
                 })
               )
             }
-            cancelFunction={() => dispatch(cancelWorkout())}
-            showPickExerciseModalFunction={() =>
+            cancel={() => {
+              dispatch(cancelWorkout())
+            }}
+            showPickExerciseModal={() =>
               dispatch(setPickExerciseModalVisible(true))
             }
           />
@@ -79,11 +79,11 @@ function CurrentWorkoutDrawer(): JSX.Element {
       </BottomDrawer>
       <PickExerciseModal
         exercisesToAdd={exercisesToAddListActive}
-        addFunction={(name: string) => dispatch(addToAddList(name))}
-        removeFunction={(name: string) => dispatch(removeFromAddList(name))}
+        add={(name: string) => dispatch(addToAddList(name))}
+        remove={(name: string) => dispatch(removeFromAddList(name))}
         open={pickExerciseModalVisible}
         onClose={() => setPickExerciseModalVisible(false)}
-        addExercisesFunction={() => dispatch(addActiveExercises())}
+        addExercises={() => dispatch(addActiveExercises())}
       />
     </>
   )

@@ -9,7 +9,7 @@ import {
 const init: Exercise[] = []
 const toAddInit: string[] = []
 
-function updateStatsByExercise(finishedExercises: Exercise[]): void {
+const updateStatsByExercise = (finishedExercises: Exercise[]): void => {
   finishedExercises.forEach((exercise) => {
     createExerciseStatTable(exercise.name)
     exercise.sets.forEach((set) => {

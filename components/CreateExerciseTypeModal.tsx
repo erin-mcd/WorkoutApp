@@ -6,7 +6,6 @@ import {
   View,
   Pressable,
   Modal,
-  Alert,
 } from 'react-native'
 
 import { addExerciseTypeToDB } from '../db-service'
@@ -16,44 +15,13 @@ interface Props {
   onClose: () => void
 }
 
-function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
+const CreateExerciseTypeModal = ({ open, onClose }: Props): JSX.Element => {
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
-
   const [description, setDescription] = useState('')
 
-  function nameInputHandler(enteredName: string): void {
-    setName(enteredName)
-  }
-
-  function categoryInputHandler(enteredName: string): void {
-    setCategory(enteredName)
-  }
-
-  function descriptionInputHandler(enteredName: string): void {
-    setDescription(enteredName)
-  }
-
-  function validateInputs(name: string): string[] {
-    const validationErrors: string[] = []
-
-    const nameIsValid = name.length > 0 && name.length < 20
-
-    if (!nameIsValid) {
-      validationErrors.push('Name is Invalid')
-    }
-
-    return validationErrors
-  }
-
-  function confirmHandler(): void {
-    const errors = validateInputs(name)
-    if (errors.length > 0) {
-      Alert.alert(JSON.stringify(errors))
-    } else {
-      addExerciseTypeToDB(name, category, description)
-    }
-
+  const confirmHandler = (): void => {
+    addExerciseTypeToDB(name, category, description)
     onClose()
   }
 
@@ -64,18 +32,30 @@ function CreateExerciseTypeModal({ open, onClose }: Props): JSX.Element {
           <View style={styles.inputsContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder="ExerciseType Name"
-              onChangeText={nameInputHandler}
+              placeholder="Exercise Name"
+              onChangeText={(enteredName: string): void => {
+                setName(enteredName)
+              }}
+              maxLength={20}
+              placeholderTextColor={'gray'}
             />
             <TextInput
               style={styles.textInput}
-              placeholder="ExerciseType Category"
-              onChangeText={categoryInputHandler}
+              placeholder="Category"
+              onChangeText={(enteredName: string): void => {
+                setCategory(enteredName)
+              }}
+              maxLength={20}
+              placeholderTextColor={'gray'}
             />
             <TextInput
               style={styles.textInput}
-              placeholder="ExerciseType Description"
-              onChangeText={descriptionInputHandler}
+              placeholder="Description"
+              onChangeText={(enteredName: string): void => {
+                setDescription(enteredName)
+              }}
+              maxLength={100}
+              placeholderTextColor={'gray'}
             />
           </View>
           <View style={styles.buttonsContainer}>

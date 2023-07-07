@@ -5,7 +5,7 @@ import CreateExerciseTypeModal from '../components/CreateExerciseTypeModal'
 import ExerciseList from '../components/ExerciseList'
 import ExerciseInfoModal from '../components/ExerciseInfoModal'
 
-function Exercises({ navigation }: any): JSX.Element {
+const Exercises = ({ navigation }: any): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false)
   const [infoModalVisible, setInfoModalModalVisible] = useState(false)
   const [exercise, setExercise] = useState({
