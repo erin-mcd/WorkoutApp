@@ -4,20 +4,20 @@ import { getExerciseTypesFromDB } from '../db-service'
 import { type ExerciseType } from '../models/ExerciseType'
 import ExerciseListItem from './ExerciseListItem'
 interface Props {
-  removeFunction?: (name: string) => void
-  addFunction?: (name: string) => void
+  remove?: (name: string) => void
+  add?: (name: string) => void
   onTap: (exerciseInfo: ExerciseType) => void
   exercisesToAdd?: string[]
 }
 
 const init: any[] = []
 
-function ExerciseList({
+const ExerciseList = ({
   exercisesToAdd,
   onTap,
-  removeFunction,
-  addFunction,
-}: Props): JSX.Element {
+  remove,
+  add,
+}: Props): JSX.Element => {
   const [exerciseTypesTable, setExerciseTypesTable] = useState(init)
 
   useEffect(() => {
@@ -29,22 +29,22 @@ function ExerciseList({
     void getExercises()
   }, [exerciseTypesTable, setExerciseTypesTable])
 
-  function tapHandler(exerciseInfo: ExerciseType): void {
+  const tapHandler = (exerciseInfo: ExerciseType): void => {
     if (
-      removeFunction !== undefined &&
-      addFunction !== undefined &&
+      remove !== undefined &&
+      add !== undefined &&
       exercisesToAdd !== undefined
     ) {
       if (exercisesToAdd.includes(exerciseInfo.name)) {
-        removeFunction(exerciseInfo.name)
+        remove(exerciseInfo.name)
       } else {
-        addFunction(exerciseInfo.name)
+        add(exerciseInfo.name)
       }
     }
     onTap(exerciseInfo)
   }
 
-  function renderExerciseType({ item }: any): JSX.Element {
+  const renderExerciseType = ({ item }: any): JSX.Element => {
     return (
       <ExerciseListItem
         onTap={tapHandler}

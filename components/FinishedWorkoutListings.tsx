@@ -11,17 +11,19 @@ import { type Exercise } from '../models/Exercise'
 import { dropWorkoutTable } from '../db-service'
 import EditWorkoutHistoryModal from './EditWorkoutHistoryModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { setHistoryValues, setIsEditing } from '../reduxThings/editHistory'
+import { setHistoryValues, setIsEditing } from '../redux/editHistory'
 import { type ExerciseSet } from '../models/ExerciseSet'
-import { type RootState } from '../reduxThings/store'
+import { type RootState } from '../redux/store'
 
-function FinishedWorkoutListings(workouts: any): JSX.Element {
+const FinishedWorkoutListings = (workouts: any): JSX.Element => {
   const dispatch = useDispatch()
   const editModalVisible: boolean = useSelector(
     (state: RootState) => state.editHistory.isEditing
   )
 
-  function findBestSet(sets: ExerciseSet[]): { weight: number; reps: number } {
+  const findBestSet = (
+    sets: ExerciseSet[]
+  ): { weight: number; reps: number } => {
     const maxWeight = Math.max.apply(
       Math,
       sets.map(function (set) {
@@ -49,7 +51,7 @@ function FinishedWorkoutListings(workouts: any): JSX.Element {
     return { weight: maxWeight, reps: maxReps }
   }
 
-  function renderExercise(itemData: any): JSX.Element {
+  const renderExercise = (itemData: any): JSX.Element => {
     const exercise: Exercise = itemData.item
     const bestSet = findBestSet(exercise.sets)
 
@@ -67,7 +69,7 @@ function FinishedWorkoutListings(workouts: any): JSX.Element {
     )
   }
 
-  function renderWorkoutListing(itemData: any): JSX.Element {
+  const renderWorkoutListing = (itemData: any): JSX.Element => {
     const workoutObject: Exercise[] = JSON.parse(itemData.item.jsonObject)
     const workoutId = JSON.parse(itemData.item.id)
 

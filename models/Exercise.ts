@@ -1,7 +1,7 @@
 import { type ExerciseSet } from './ExerciseSet'
 
-export class Exercise {
-  name!: string
-  sets!: ExerciseSet[]
-  id!: number
+export interface Exercise {
+  name: string
+  sets: ExerciseSet[]
+  id: number
 }

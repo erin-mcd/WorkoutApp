@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import ExerciseCountByWeekBarChart from '../components/charts/ExerciseCountByWeekBarChart'
 
-function StatsScreen(): JSX.Element {
+const StatsScreen = (): JSX.Element => {
   return (
     <View style={styles.graphsContainer}>
       <ExerciseCountByWeekBarChart />

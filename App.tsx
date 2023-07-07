@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
-import { store } from './reduxThings/store'
+import { store } from './redux/store'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import HistoryScreen from './screens/HistoryScreen'
@@ -19,7 +19,7 @@ createExerciseTypesTable()
 const BottomTabs = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
-function BottomTab(): JSX.Element {
+const BottomTab = (): JSX.Element => {
   return (
     <BottomTabs.Navigator>
       <BottomTabs.Screen name="Stats" component={StatsScreen} />
