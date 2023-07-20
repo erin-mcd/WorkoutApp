@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, FlatList } from 'react-native'
-import { getExerciseTypesFromDB } from '../db-service'
 import { type ExerciseType } from '../models/ExerciseType'
 import ExerciseListItem from './ExerciseListItem'
 interface Props {
+  exerciseTypes?: any
   remove?: (name: string) => void
   add?: (name: string) => void
   onTap: (exerciseInfo: ExerciseType) => void
   exercisesToAdd?: string[]
 }
 
-const init: any[] = []
-
 const ExerciseList = ({
+  exerciseTypes,
   exercisesToAdd,
   onTap,
   remove,
   add,
 }: Props): JSX.Element => {
-  const [exerciseTypesTable, setExerciseTypesTable] = useState(init)
-
-  useEffect(() => {
-    async function getExercises(): Promise<void> {
-      const exerciseTypes = await getExerciseTypesFromDB()
-      setExerciseTypesTable(exerciseTypes)
-    }
-
-    void getExercises()
-  }, [exerciseTypesTable, setExerciseTypesTable])
-
   const tapHandler = (exerciseInfo: ExerciseType): void => {
     if (
       remove !== undefined &&
@@ -61,7 +49,7 @@ const ExerciseList = ({
   return (
     <View>
       <FlatList
-        data={exerciseTypesTable}
+        data={exerciseTypes}
         keyExtractor={(item) => item.id}
         renderItem={renderExerciseType}
       />

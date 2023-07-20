@@ -1,9 +1,10 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import CreateExerciseTypeModal from '../components/CreateExerciseTypeModal'
 import ExerciseList from '../components/ExerciseList'
 import ExerciseInfoModal from '../components/ExerciseInfoModal'
+import { getExerciseTypesFromDB } from '../db-service'
 
 const Exercises = ({ navigation }: any): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -14,6 +15,18 @@ const Exercises = ({ navigation }: any): JSX.Element => {
     category: '',
     id: 0,
   })
+  const init: any[] = []
+
+  const [exerciseTypes, setExerciseTypes] = useState(init)
+
+  useEffect(() => {
+    async function getExercises(): Promise<void> {
+      const exerciseTypes = await getExerciseTypesFromDB()
+      setExerciseTypes(exerciseTypes)
+    }
+
+    void getExercises()
+  }, [exerciseTypes, setExerciseTypes])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,6 +51,7 @@ const Exercises = ({ navigation }: any): JSX.Element => {
     <>
       <View style={styles.exerciseList}>
         <ExerciseList
+          exerciseTypes={exerciseTypes}
           onTap={(exerciseInfo) => {
             setExercise(exerciseInfo)
             setInfoModalModalVisible(true)
@@ -45,6 +59,7 @@ const Exercises = ({ navigation }: any): JSX.Element => {
         />
       </View>
       <CreateExerciseTypeModal
+        exerciseTypes={exerciseTypes}
         open={modalVisible}
         onClose={() => {
           setModalVisible(false)
