@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Modal, Text, TouchableOpacity } from 'react-native'
+import { getExerciseTypesFromDB } from '../db-service'
 
 import ExerciseList from './ExerciseList'
 
@@ -20,6 +21,18 @@ const PickExerciseModal = ({
   onClose,
   addExercises,
 }: Props): JSX.Element => {
+  const init: any[] = []
+  const [exerciseTypes, setExerciseTypes] = useState(init)
+
+  useEffect(() => {
+    async function getExercises(): Promise<void> {
+      const exerciseTypes = await getExerciseTypesFromDB()
+      setExerciseTypes(exerciseTypes)
+    }
+
+    void getExercises()
+  }, [exerciseTypes, setExerciseTypes])
+
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.contentContainer}>
@@ -32,6 +45,7 @@ const PickExerciseModal = ({
           </TouchableOpacity>
           <View>
             <ExerciseList
+              exerciseTypes={exerciseTypes}
               exercisesToAdd={exercisesToAdd}
               add={add}
               remove={remove}

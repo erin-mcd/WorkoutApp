@@ -6,21 +6,36 @@ import {
   View,
   Pressable,
   Modal,
+  Alert,
 } from 'react-native'
 
 import { addExerciseTypeToDB } from '../db-service'
+import { type ExerciseType } from '../models/ExerciseType'
 
 interface Props {
+  exerciseTypes: ExerciseType[]
   open: boolean
   onClose: () => void
 }
 
-const CreateExerciseTypeModal = ({ open, onClose }: Props): JSX.Element => {
+const CreateExerciseTypeModal = ({
+  exerciseTypes,
+  open,
+  onClose,
+}: Props): JSX.Element => {
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
+  const exerciseTypeNames = exerciseTypes.map(
+    (exerciseType) => exerciseType.name
+  )
 
   const confirmHandler = (): void => {
+    if (exerciseTypeNames.includes(name)) {
+      Alert.alert(`'${name}' is already the name of an exercise type`)
+
+      return
+    }
     addExerciseTypeToDB(name, category, description)
     onClose()
   }
